@@ -15,11 +15,11 @@
 
 ---
 
-<img src="docs/screenshots/1.png" alt="CoreInventory Dashboard — Dark Mode" width="90%" />
+<img src="docs/1.png" alt="CoreInventory Dashboard — Dark Mode" width="90%" />
 
 <br/><br/>
 
-<img src="docs/screenshots/2.png" alt="CoreInventory Dashboard — Light Mode" width="90%" />
+<img src="docs/2.png" alt="CoreInventory Dashboard — Light Mode" width="90%" />
 
 <sub>📸 Dashboard overview — switch seamlessly between Dark and Light modes</sub>
 
@@ -69,35 +69,35 @@
 <div align="center">
 
 ### 🏠 Dashboard — Dark Mode
-<img src="docs/screenshots/1.png" alt="Dashboard Dark" width="85%" />
+<img src="docs/1.png" alt="Dashboard Dark" width="85%" />
 
 > _Glassmorphic KPI cards with animated counters, low-stock alerts, quick action buttons, and recent operations table._
 
 ---
 
 ### ☀️ Dashboard — Light Mode
-<img src="docs/screenshots/2.png" alt="Dashboard Light" width="85%" />
+<img src="docs/2.png" alt="Dashboard Light" width="85%" />
 
 > _Same powerful dashboard in a clean, bright white theme — crystal clear readability._
 
 ---
 
 ### 📝 Select Operation Type
-<img src="docs/screenshots/3.png" alt="Operation Type Selector" width="85%" />
+<img src="docs/3.png" alt="Operation Type Selector" width="85%" />
 
-> _Choose from 4 operation types: Receipt, Delivery, Transfer, or Adjustment. Each with descriptive cards._
+> _STOCK VIEW : Choose from 4 operation types: Receipt, Delivery, Transfer, or Adjustment. Detailed Stock Related Operations._
 
 ---
 
 ### 📋 Inventory Management
-<img src="docs/screenshots/4.png" alt="New Transfer Operation" width="85%" />
+<img src="docs/4.png" alt="New Transfer Operation" width="85%" />
 
 > _Complete Inventory management with source/destination, Live Stock, Low Stock Alerts, and dynamic product line items._
 
 ---
 
 ### 🖨️ PDF Receipt Output
-<img src="docs/screenshots/5.png" alt="Receipt PDF" width="60%" />
+<img src="docs/5.png" alt="Receipt PDF" width="60%" />
 
 > _Professional print template with company logo, operation details, routing info, product lines table, notes section, signature blocks, and timestamps._
 
@@ -172,7 +172,7 @@ The system generates **professional, print-ready receipt documents** for every w
 ```
 
 <div align="center">
-<img src="docs/screenshots/receipt_pdf.png" alt="PDF Receipt Preview" width="50%" />
+<img src="docs/5.png" alt="PDF Receipt Preview" width="50%" />
 
 <sub>↑ Professional receipt with branding • routing • product lines • signature blocks</sub>
 </div>
@@ -475,7 +475,7 @@ This project is built as part of an academic/professional portfolio. All rights 
 
 <div align="center">
 
-### Built with ❤️ by [Jenil Revaliya](https://github.com/JenilRevaliya)
+### DEVELOPED by [Jenil Soni | Harmit Kalal | Aarth Patel] for Odoo x Indus Hackathon
 
 _CoreInventory — Where precision meets elegance in warehouse management._
 
