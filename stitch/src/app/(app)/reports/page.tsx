@@ -60,23 +60,21 @@ export default function ReportsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <p className="text-xs text-gray-500 dark:text-muted-foreground uppercase tracking-wider font-semibold">Insights / Reports</p>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground">Analytics &amp; Reports</h1>
-          <p className="text-gray-500 dark:text-muted-foreground text-sm mt-0.5">
-            Live summary of your inventory movement and operational status.
-          </p>
+        <div className="flex items-center gap-3">
+          <p className="text-xs text-gray-500 dark:text-muted-foreground uppercase tracking-widest font-black">Intelligence</p>
+          <div className="w-1 h-1 rounded-full bg-orange-500" />
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground tracking-tight">Analytics & Reports</h1>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="gap-2" onClick={handlePrintStock}>
-            <Printer className="w-4 h-4" /> Print Stock Report
+          <Button variant="outline" className="gap-2 dark:border-border dark:hover:bg-muted font-bold uppercase tracking-widest text-[10px] h-10 px-5" onClick={handlePrintStock}>
+            <Printer className="w-4 h-4" /> Global Stock Report
           </Button>
           <Link
             href="/move-history"
-            className="bg-indigo-600 dark:bg-primary text-white dark:text-primary-foreground hover:bg-indigo-700 dark:hover:bg-primary/90 transition-all flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold shadow-sm"
+            className="bg-indigo-600 dark:bg-primary text-white dark:text-primary-foreground hover:bg-indigo-700 dark:hover:bg-primary/90 transition-all flex items-center gap-2 px-6 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest shadow-lg shadow-orange-500/20 active:scale-95"
           >
             <Download className="w-4 h-4" />
-            View Full Ledger
+            Full Audit Path
           </Link>
         </div>
       </div>

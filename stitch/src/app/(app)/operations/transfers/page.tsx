@@ -4,7 +4,7 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { StatusPill } from "@/components/ui/status-pill";
 import { Button } from "@/components/ui/button";
-import { Plus, Eye } from "lucide-react";
+import { Plus, Eye, Search } from "lucide-react";
 import Link from "next/link";
 
 export default function TransfersPage() {
@@ -19,61 +19,74 @@ export default function TransfersPage() {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <div>
-          <p className="text-xs text-gray-500">Logistics / Transfers</p>
-          <h1 className="text-2xl font-bold text-gray-900">Internal Transfers</h1>
+        <div className="flex items-center gap-3">
+          <p className="text-xs text-gray-500 dark:text-muted-foreground uppercase tracking-widest font-black">Inter-Warehouse</p>
+          <div className="w-1 h-1 rounded-full bg-orange-500" />
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground tracking-tight">Internal Transfers</h1>
         </div>
         <Link href="/operations/transfers/new">
-          <Button className="bg-indigo-600 hover:bg-indigo-700 gap-2"><Plus className="w-4 h-4" />New Transfer</Button>
+          <Button className="bg-indigo-600 dark:bg-primary hover:bg-indigo-700 dark:hover:bg-primary/90 text-white dark:text-primary-foreground font-bold shadow-lg shadow-orange-500/20 gap-2 px-6">
+            <Plus className="w-4 h-4" /> Relocation Task
+          </Button>
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-100 p-4 flex gap-3">
+      <div className="bg-white dark:bg-card rounded-xl border border-gray-100 dark:border-border p-4 flex gap-3 transition-colors shadow-sm">
         <select value={locationId ?? ""} onChange={e => setLocationId(e.target.value || undefined)}
-          className="h-9 border border-gray-200 rounded-lg px-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white text-gray-700">
-          <option value="">All Locations</option>
+          className="h-9 border border-gray-200 dark:border-border rounded-lg px-3 text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none bg-white dark:bg-muted/50 text-gray-700 dark:text-foreground transition-colors">
+          <option value="">Origin Point</option>
           {locations?.map(l => (
             <option key={l.id} value={l.id}>{l.name}</option>
           ))}
         </select>
-        <select value={status ?? ""} onChange={e => setStatus(e.target.value ? (e.target.value as "draft" | "waiting" | "ready" | "done" | "canceled") : undefined)}
-          className="h-9 border border-gray-200 rounded-lg px-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white text-gray-700">
-          <option value="">All Status</option>
+        <select value={status ?? ""} onChange={e => setStatus(e.target.value ? (e.target.value as any) : undefined)}
+          className="h-9 border border-gray-200 dark:border-border rounded-lg px-3 text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none bg-white dark:bg-muted/50 text-gray-700 dark:text-foreground transition-colors">
+          <option value="">Status Class</option>
           {["draft","ready","done","canceled"].map(s => (
             <option key={s} value={s}>{s.charAt(0).toUpperCase()+s.slice(1)}</option>
           ))}
         </select>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+      <div className="bg-white dark:bg-card rounded-xl border border-gray-100 dark:border-border overflow-hidden transition-colors shadow-sm">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-xs text-gray-500 uppercase tracking-wider">
+          <thead className="bg-gray-50 dark:bg-muted/50 text-[10px] text-gray-500 dark:text-muted-foreground uppercase tracking-widest font-black border-b dark:border-border">
             <tr>
-              {["Reference","From","To","Date","Status","Actions"].map(h => (
-                <th key={h} className="text-left px-4 py-3 font-semibold">{h}</th>
+              {["Reference","Origin","Destination","Timestamp","Status","Actions"].map(h => (
+                <th key={h} className="text-left px-4 py-3">{h}</th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50">
+          <tbody className="divide-y divide-gray-50 dark:divide-border/50">
             {isLoading ? (
-              <tr><td colSpan={6} className="text-center py-12 text-gray-400">Loading...</td></tr>
+              <tr><td colSpan={6} className="text-center py-12 text-gray-400 dark:text-muted-foreground">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-6 h-6 border-2 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
+                  <span className="text-xs font-bold tracking-widest uppercase">Syncing...</span>
+                </div>
+              </td></tr>
             ) : !data?.items.length ? (
-              <tr><td colSpan={6} className="text-center py-12 text-gray-400">No transfers found</td></tr>
+              <tr><td colSpan={6} className="text-center py-12 text-gray-400 dark:text-muted-foreground">
+                <div className="flex flex-col items-center gap-2">
+                  <Eye className="w-8 h-8 opacity-20" />
+                  <span className="text-xs font-bold tracking-widest uppercase">No transfers found</span>
+                </div>
+              </td></tr>
             ) : data.items.map(t => (
-              <tr key={t.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3 font-mono font-semibold text-indigo-600">{t.reference}</td>
-                <td className="px-4 py-3 text-gray-700">{t.sourceLocation?.warehouse?.name} / {t.sourceLocation?.name}</td>
-                <td className="px-4 py-3 text-gray-700">{t.destinationLocation?.warehouse?.name} / {t.destinationLocation?.name}</td>
-                <td className="px-4 py-3 text-gray-500">{t.createdAt ? new Date(t.createdAt).toLocaleDateString() : "—"}</td>
-                <td className="px-4 py-3"><StatusPill status={t.status as "draft" | "waiting" | "ready" | "done" | "canceled"} /></td>
-                <td className="px-4 py-3">
-                  <div className="flex gap-2">
+              <tr key={t.id} className="hover:bg-gray-50 dark:hover:bg-muted/20 transition-colors group">
+                <td className="px-4 py-3 font-mono font-bold text-orange-600 dark:text-primary text-[11px] uppercase tracking-tighter">{t.reference}</td>
+                <td className="px-4 py-3 text-gray-700 dark:text-foreground font-medium text-[11px]">{t.sourceLocation?.warehouse?.name} / {t.sourceLocation?.name}</td>
+                <td className="px-4 py-3 text-gray-700 dark:text-foreground font-medium text-[11px]">{t.destinationLocation?.warehouse?.name} / {t.destinationLocation?.name}</td>
+                <td className="px-4 py-3 text-gray-500 dark:text-muted-foreground text-[11px] font-medium">{t.createdAt ? new Date(t.createdAt).toLocaleDateString() : "—"}</td>
+                <td className="px-4 py-3"><StatusPill status={t.status as any} /></td>
+                <td className="px-4 py-3 text-right">
+                  <div className="flex gap-2 justify-end">
                     <Link href={`/operations/transfers/${t.id}`}>
-                      <Button variant="ghost" size="sm" className="h-7 px-2"><Eye className="w-3.5 h-3.5" /></Button>
+                      <Button variant="ghost" size="sm" className="h-7 px-2 hover:bg-orange-500/10 hover:text-orange-500"><Eye className="w-3.5 h-3.5" /></Button>
                     </Link>
                     {t.status === "ready" && (
-                      <Button size="sm" className="h-7 text-xs bg-green-600 hover:bg-green-700 text-white"
-                        onClick={() => validate.mutate({ id: t.id })}>Validate</Button>
+                      <Button size="sm" className="h-7 text-[10px] font-bold uppercase tracking-widest bg-green-600 hover:bg-green-700 text-white border-none shadow-sm shadow-green-500/20 px-4"
+                        onClick={() => validate.mutate({ id: t.id })}>Relocate</Button>
                     )}
                   </div>
                 </td>
@@ -81,11 +94,11 @@ export default function TransfersPage() {
             ))}
           </tbody>
         </table>
-        <div className="px-4 py-3 border-t border-gray-100 flex items-center justify-between text-sm text-gray-500">
-          <span>Page {data?.page}</span>
+        <div className="px-6 py-4 border-t border-gray-100 dark:border-border/50 flex items-center justify-between text-[11px] text-gray-500 dark:text-muted-foreground font-bold tracking-widest uppercase">
+          <span className="opacity-60">Ledger Tier: {data?.page}</span>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled={page === 1} onClick={() => setPage(p => p - 1)}>Prev</Button>
-            <Button variant="outline" size="sm" disabled={(data?.items.length ?? 0) < 20} onClick={() => setPage(p => p + 1)}>Next</Button>
+            <Button variant="outline" size="sm" disabled={page === 1} onClick={() => setPage(p => p - 1)} className="h-8 dark:border-border dark:hover:bg-muted">Previous</Button>
+            <Button variant="outline" size="sm" disabled={(data?.items.length ?? 0) < 20} onClick={() => setPage(p => p + 1)} className="h-8 dark:border-border dark:hover:bg-muted">Next Sequence</Button>
           </div>
         </div>
       </div>

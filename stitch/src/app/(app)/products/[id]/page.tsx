@@ -22,7 +22,7 @@ export default function ProductDetailPage() {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{product.name}</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground">{product.name}</h1>
             <p className="text-gray-500 text-sm">SKU: {product.sku} • Category: {product.category?.name ?? "None"}</p>
           </div>
         </div>

@@ -26,7 +26,7 @@ export default function NewAdjustmentPage() {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">New Inventory Adjustment</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground">New Inventory Adjustment</h1>
           <p className="text-gray-500 text-sm">Update current stock levels at a specific location.</p>
         </div>
       </div>

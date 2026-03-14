@@ -39,7 +39,7 @@ export default function DeliveryDetailPage() {
           </button>
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h1 className="text-2xl font-bold text-gray-900">{delivery.reference}</h1>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground">{delivery.reference}</h1>
               <StatusPill status={delivery.status as "draft" | "waiting" | "ready" | "done" | "canceled"} />
             </div>
             <p className="text-gray-500 text-sm">

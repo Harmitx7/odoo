@@ -22,7 +22,7 @@ export default function AdjustmentsPage() {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-xs text-gray-500">Logistics / Inventory Adjustments</p>
-          <h1 className="text-2xl font-bold text-gray-900">Inventory Adjustments</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground">Inventory Adjustments</h1>
         </div>
         <Link href="/operations/adjustments/new">
           <Button className="bg-indigo-600 hover:bg-indigo-700 gap-2">

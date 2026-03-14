@@ -77,7 +77,7 @@ export default function DashboardPage() {
       {/* Header */}
       <div>
         <p className="text-xs text-gray-500 dark:text-muted-foreground mb-1">Pages / Dashboard</p>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground dark:text-foreground">Dashboard</h1>
         <p className="text-gray-500 dark:text-muted-foreground text-sm mt-0.5">
           Overview of your warehouse operations and inventory status.
         </p>
@@ -173,19 +173,19 @@ export default function DashboardPage() {
           </div>
           <div className="grid grid-cols-3 gap-3 text-center">
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-foreground">
+              <p className="text-2xl font-bold text-gray-900 dark:text-foreground dark:text-foreground">
                 {kpis?.receiptOps.toReceive ?? "—"}
               </p>
               <p className="text-xs text-gray-500 dark:text-muted-foreground mt-0.5 uppercase tracking-tighter font-semibold">TO RECEIVE</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-foreground">
+              <p className="text-2xl font-bold text-gray-900 dark:text-foreground dark:text-foreground">
                 {kpis?.receiptOps.inInspection ?? "—"}
               </p>
               <p className="text-xs text-gray-500 dark:text-muted-foreground mt-0.5 uppercase tracking-tighter font-semibold">IN INSPECTION</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-foreground">
+              <p className="text-2xl font-bold text-gray-900 dark:text-foreground dark:text-foreground">
                 {kpis?.receiptOps.completed ?? "—"}
               </p>
               <p className="text-xs text-gray-500 dark:text-muted-foreground mt-0.5 uppercase tracking-tighter font-semibold">COMPLETED</p>
@@ -213,19 +213,19 @@ export default function DashboardPage() {
           </div>
           <div className="grid grid-cols-3 gap-3 text-center">
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-foreground">
+              <p className="text-2xl font-bold text-gray-900 dark:text-foreground dark:text-foreground">
                 {kpis?.deliveryOps.picking ?? "—"}
               </p>
               <p className="text-xs text-gray-500 dark:text-muted-foreground mt-0.5 uppercase tracking-tighter font-semibold">PICKING</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-foreground">
+              <p className="text-2xl font-bold text-gray-900 dark:text-foreground dark:text-foreground">
                 {kpis?.deliveryOps.packing ?? "—"}
               </p>
               <p className="text-xs text-gray-500 dark:text-muted-foreground mt-0.5 uppercase tracking-tighter font-semibold">PACKING</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900 dark:text-foreground">
+              <p className="text-2xl font-bold text-gray-900 dark:text-foreground dark:text-foreground">
                 {kpis?.deliveryOps.dispatched ?? "—"}
               </p>
               <p className="text-xs text-gray-500 dark:text-muted-foreground mt-0.5 uppercase tracking-tighter font-semibold">DISPATCHED</p>

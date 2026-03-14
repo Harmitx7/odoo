@@ -40,7 +40,7 @@ export default function ReceiptDetailPage() {
           </button>
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h1 className="text-2xl font-bold text-gray-900">{receipt.reference}</h1>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground">{receipt.reference}</h1>
               <StatusPill status={receipt.status as "draft" | "waiting" | "ready" | "done" | "canceled"} />
             </div>
             <p className="text-gray-500 text-sm">

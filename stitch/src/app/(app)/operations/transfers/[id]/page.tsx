@@ -38,7 +38,7 @@ export default function TransferDetailPage() {
           </button>
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h1 className="text-2xl font-bold text-gray-900">{transfer.reference}</h1>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground">{transfer.reference}</h1>
               <StatusPill status={transfer.status as "draft" | "waiting" | "ready" | "done" | "canceled"} />
             </div>
             <p className="text-gray-500 text-sm">

@@ -26,7 +26,7 @@ export default function NewReceiptPage() {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">New Receipt</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground">New Receipt</h1>
           <p className="text-gray-500 text-sm">Create a draft receipt to receive inventory.</p>
         </div>
       </div>

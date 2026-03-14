@@ -29,19 +29,19 @@ export default function ProductsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <p className="text-xs text-gray-500 dark:text-muted-foreground uppercase tracking-wider font-semibold">Inventory / Products</p>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground">Products</h1>
-          <p className="text-gray-500 dark:text-muted-foreground text-sm mt-0.5">Manage your central product catalog and stock levels.</p>
+        <div className="flex items-center gap-3">
+          <p className="text-xs text-gray-500 dark:text-muted-foreground uppercase tracking-widest font-black">Asset Registry</p>
+          <div className="w-1 h-1 rounded-full bg-orange-500" />
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground tracking-tight">Product Catalog</h1>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="gap-2" onClick={handlePrint} disabled={isLoading || !data?.items.length}>
-            <Printer className="w-4 h-4" /> Print Catalog
+          <Button variant="outline" className="gap-2 dark:border-border dark:hover:bg-muted font-bold uppercase tracking-widest text-[10px] h-10 px-5" onClick={handlePrint} disabled={isLoading || !data?.items.length}>
+            <Printer className="w-4 h-4" /> Global Catalog
           </Button>
           <Link href="/products/new">
-            <Button className="bg-indigo-600 dark:bg-primary hover:bg-indigo-700 dark:hover:bg-primary/90 text-white dark:text-primary-foreground gap-2 transition-all font-semibold shadow-sm">
+            <Button className="bg-indigo-600 dark:bg-primary hover:bg-indigo-700 dark:hover:bg-primary/90 text-white dark:text-primary-foreground gap-2 transition-all font-black uppercase tracking-widest text-[11px] h-10 px-6 rounded-xl shadow-lg shadow-orange-500/20 active:scale-95">
               <Plus className="w-4 h-4" />
-              Add Product
+              Manifest Asset
             </Button>
           </Link>
         </div>

@@ -57,7 +57,9 @@ export function Sidebar() {
               <p className="text-xs font-semibold text-gray-500 dark:text-muted-foreground uppercase tracking-wider px-3 py-1.5">{group}</p>
             )}
             {items.map(({ href, label, icon: Icon }) => {
-              const isActive = pathname === href || pathname.startsWith(href + "/");
+              const isActive = href === "/settings" 
+                ? pathname === href 
+                : pathname === href || pathname.startsWith(href + "/");
               return (
                 <Link key={href} href={href}
                   className={cn("flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all",
