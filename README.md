@@ -89,10 +89,10 @@
 
 ---
 
-### 📋 New Transfer Form
+### 📋 Inventory Management
 <img src="docs/screenshots/4.png" alt="New Transfer Operation" width="85%" />
 
-> _Complete form with source/destination location pickers, reference numbers, notes, and dynamic product line items._
+> _Complete Inventory management with source/destination, Live Stock, Low Stock Alerts, and dynamic product line items._
 
 ---
 
@@ -108,15 +108,15 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                        CLIENT (Browser)                         │
+│                        CLIENT (Browser)                          │
 │  ┌────────────────────────────────────────────────────────────┐  │
 │  │              Next.js 16 (App Router + RSC)                 │  │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐  │  │
-│  │  │Dashboard │ │Products  │ │Operations│ │  Settings    │  │  │
-│  │  │  Page    │ │  CRUD    │ │ Workflow │ │  & Profile   │  │  │
-│  │  └────┬─────┘ └────┬─────┘ └────┬─────┘ └──────┬───────┘  │  │
-│  │       │             │            │              │          │  │
-│  │  ┌────┴─────────────┴────────────┴──────────────┴───────┐  │  │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐   │  │
+│  │  │Dashboard │ │Products  │ │Operations│ │  Settings    │   │  │
+│  │  │  Page    │ │  CRUD    │ │ Workflow │ │  & Profile   │   │  │
+│  │  └────┬─────┘ └────┬─────┘ └────┬─────┘ └──────┬───────┘   │  │
+│  │       │            │            │              │           │  │
+│  │  ┌────┴────────────┴────────────┴──────────────┴────────┐  │  │
 │  │  │           React Query + Zustand State                │  │  │
 │  │  │      (Auth, Backend Status, UI, Theme)               │  │  │
 │  │  └─────────────────────┬────────────────────────────────┘  │  │
@@ -126,18 +126,18 @@
                             ▼
 ┌──────────────────────────────────────────────────────────────────┐
 │                      SERVER (Express 5)                          │
-│  ┌─────────┐ ┌──────────┐ ┌───────────┐ ┌───────────────────┐   │
-│  │  Auth   │ │ Products │ │Operations │ │  Stock Ledger     │   │
-│  │  Module │ │  Module  │ │  Module   │ │    Module         │   │
-│  └────┬────┘ └────┬─────┘ └─────┬─────┘ └────────┬──────────┘   │
+│  ┌─────────┐ ┌──────────┐ ┌───────────┐ ┌───────────────────┐    │
+│  │  Auth   │ │ Products │ │Operations │ │  Stock Ledger     │    │
+│  │  Module │ │  Module  │ │  Module   │ │    Module         │    │
+│  └────┬────┘ └────┬─────┘ └─────┬─────┘ └────────┬──────────┘    │
 │       └───────────┴─────────────┴────────────────┘               │
 │                           │                                      │
 │              ┌────────────┼────────────┐                         │
 │              ▼            ▼            ▼                         │
-│        ┌──────────┐ ┌──────────┐ ┌──────────┐                   │
-│        │PostgreSQL│ │  Redis   │ │  Winston │                   │
-│        │   15     │ │    7     │ │  Logger  │                   │
-│        └──────────┘ └──────────┘ └──────────┘                   │
+│        ┌──────────┐ ┌──────────┐ ┌──────────┐                    │
+│        │PostgreSQL│ │  Redis   │ │  Winston │                    │
+│        │   15     │ │    7     │ │  Logger  │                    │
+│        └──────────┘ └──────────┘ └──────────┘                    │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
