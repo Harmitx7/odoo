@@ -15,11 +15,11 @@
 
 ---
 
-<img src="docs/screenshots/dashboard_dark.png" alt="CoreInventory Dashboard — Dark Mode" width="90%" />
+<img src="docs/screenshots/1.png" alt="CoreInventory Dashboard — Dark Mode" width="90%" />
 
 <br/><br/>
 
-<img src="docs/screenshots/dashboard_light.png" alt="CoreInventory Dashboard — Light Mode" width="90%" />
+<img src="docs/screenshots/2.png" alt="CoreInventory Dashboard — Light Mode" width="90%" />
 
 <sub>📸 Dashboard overview — switch seamlessly between Dark and Light modes</sub>
 
@@ -69,40 +69,39 @@
 <div align="center">
 
 ### 🏠 Dashboard — Dark Mode
-<img src="docs/screenshots/dashboard_dark.png" alt="Dashboard Dark" width="85%" />
+<img src="docs/screenshots/1.png" alt="Dashboard Dark" width="85%" />
 
 > _Glassmorphic KPI cards with animated counters, low-stock alerts, quick action buttons, and recent operations table._
 
 ---
 
 ### ☀️ Dashboard — Light Mode
-<img src="docs/screenshots/dashboard_light.png" alt="Dashboard Light" width="85%" />
+<img src="docs/screenshots/2.png" alt="Dashboard Light" width="85%" />
 
 > _Same powerful dashboard in a clean, bright white theme — crystal clear readability._
 
 ---
 
 ### 📝 Select Operation Type
-<img src="docs/screenshots/operation_type.png" alt="Operation Type Selector" width="85%" />
+<img src="docs/screenshots/3.png" alt="Operation Type Selector" width="85%" />
 
 > _Choose from 4 operation types: Receipt, Delivery, Transfer, or Adjustment. Each with descriptive cards._
 
 ---
 
 ### 📋 New Transfer Form
-<img src="docs/screenshots/new_operation.png" alt="New Transfer Operation" width="85%" />
+<img src="docs/screenshots/4.png" alt="New Transfer Operation" width="85%" />
 
 > _Complete form with source/destination location pickers, reference numbers, notes, and dynamic product line items._
 
 ---
 
 ### 🖨️ PDF Receipt Output
-<img src="docs/screenshots/receipt_pdf.png" alt="Receipt PDF" width="60%" />
+<img src="docs/screenshots/5.png" alt="Receipt PDF" width="60%" />
 
 > _Professional print template with company logo, operation details, routing info, product lines table, notes section, signature blocks, and timestamps._
 
 </div>
-
 ---
 
 ## 🏗️ Architecture
