@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import { History } from "lucide-react";
+import { History, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { generateMoveHistoryPDF, printPDF } from "@/lib/generate-pdf";
 
 const OP_ICONS: Record<string, string> = {
   receipt: "↑", delivery: "↓", transfer: "⇄", adjustment: "±",
@@ -18,12 +19,23 @@ export default function MoveHistoryPage() {
 
   const { data, isLoading } = trpc.ledger.list.useQuery({ operationType: opType, page, pageSize: 20 });
 
+  const handlePrint = () => {
+    if (!data?.items) return;
+    const doc = generateMoveHistoryPDF(data.items);
+    printPDF(doc);
+  };
+
   return (
     <div className="space-y-5">
-      <div>
-        <p className="text-xs text-gray-500">Insights / Move History</p>
-        <h1 className="text-2xl font-bold text-gray-900">Move History</h1>
-        <p className="text-gray-500 text-sm">Immutable audit ledger — all stock movements recorded.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-xs text-gray-500">Insights / Move History</p>
+          <h1 className="text-2xl font-bold text-gray-900">Move History</h1>
+          <p className="text-gray-500 text-sm">Immutable audit ledger — all stock movements recorded.</p>
+        </div>
+        <Button variant="outline" className="gap-2" onClick={handlePrint} disabled={isLoading || !data?.items.length}>
+          <Printer className="w-4 h-4" /> Print Ledger
+        </Button>
       </div>
 
       {/* Filters */}

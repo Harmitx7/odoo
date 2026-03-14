@@ -3,10 +3,9 @@
 import { trpc } from "@/lib/trpc";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CheckCircle, Download } from "lucide-react";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import { ArrowLeft, CheckCircle, Download, Printer } from "lucide-react";
 import { StatusPill } from "@/components/ui/status-pill";
+import { generateReceiptPDF, printPDF } from "@/lib/generate-pdf";
 
 export default function ReceiptDetailPage() {
   const router = useRouter();
@@ -18,30 +17,14 @@ export default function ReceiptDetailPage() {
 
   const handleDownloadPDF = () => {
     if (!receipt) return;
-    const doc = new jsPDF();
-    
-    doc.setFontSize(20);
-    doc.text("Receipt Document", 14, 22);
-    
-    doc.setFontSize(10);
-    doc.text(`Reference: ${receipt.reference}`, 14, 32);
-    doc.text(`Date: ${new Date(receipt.createdAt).toLocaleDateString()}`, 14, 38);
-    doc.text(`Supplier: ${receipt.supplierName ?? "Vendor"}`, 14, 44);
-    doc.text(`Status: ${receipt.status.toUpperCase()}`, 14, 50);
-    
-    const tableData = receipt.lines.map((l: { product?: { sku: string; name: string }; quantity: number; uom: string | null }) => [
-      l.product?.sku || "-",
-      l.product?.name || "-",
-      `${l.quantity} ${l.uom || "Units"}`
-    ]);
-
-    autoTable(doc, {
-      startY: 60,
-      head: [["SKU", "Product", "Quantity"]],
-      body: tableData,
-    });
-
+    const doc = generateReceiptPDF(receipt);
     doc.save(`${receipt.reference}.pdf`);
+  };
+
+  const handlePrintPDF = () => {
+    if (!receipt) return;
+    const doc = generateReceiptPDF(receipt);
+    printPDF(doc);
   };
 
   if (isLoading) return <div className="p-8 text-center text-gray-500">Loading receipt...</div>;
@@ -68,6 +51,9 @@ export default function ReceiptDetailPage() {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-3">
+          <Button variant="outline" className="gap-2" onClick={handlePrintPDF}>
+            <Printer className="w-4 h-4" /> Print
+          </Button>
           <Button variant="outline" className="gap-2" onClick={handleDownloadPDF}>
             <Download className="w-4 h-4" /> Download PDF
           </Button>

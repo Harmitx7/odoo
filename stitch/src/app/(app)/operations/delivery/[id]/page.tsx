@@ -3,10 +3,9 @@
 import { trpc } from "@/lib/trpc";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CheckCircle, Download } from "lucide-react";
+import { ArrowLeft, CheckCircle, Download, Printer } from "lucide-react";
 import { StatusPill } from "@/components/ui/status-pill";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import { generateDeliveryPDF, printPDF } from "@/lib/generate-pdf";
 
 export default function DeliveryDetailPage() {
   const router = useRouter();
@@ -18,31 +17,14 @@ export default function DeliveryDetailPage() {
 
   const handleDownloadPDF = () => {
     if (!delivery) return;
-    const doc = new jsPDF();
-    
-    doc.setFontSize(20);
-    doc.text("Delivery Note", 14, 22);
-    
-    doc.setFontSize(10);
-    doc.text(`Reference: ${delivery.reference}`, 14, 32);
-    doc.text(`Date: ${new Date(delivery.createdAt).toLocaleDateString()}`, 14, 38);
-    doc.text(`Customer: ${delivery.customerName ?? "Customer"}`, 14, 44);
-    doc.text(`Status: ${delivery.status.toUpperCase()}`, 14, 50);
-    
-    const tableData = delivery.lines.map((l: { product?: { sku: string; name: string }; demandQuantity: number; doneQuantity: number; uom: string | null }) => [
-      l.product?.sku || "-",
-      l.product?.name || "-",
-      `${l.demandQuantity} ${l.uom || "Units"}`,
-      `${l.doneQuantity} ${l.uom || "Units"}`
-    ]);
-
-    autoTable(doc, {
-      startY: 60,
-      head: [["SKU", "Product", "Demand", "Done"]],
-      body: tableData,
-    });
-
+    const doc = generateDeliveryPDF(delivery);
     doc.save(`${delivery.reference}.pdf`);
+  };
+
+  const handlePrintPDF = () => {
+    if (!delivery) return;
+    const doc = generateDeliveryPDF(delivery);
+    printPDF(doc);
   };
 
   if (isLoading) return <div className="p-8 text-center text-gray-500">Loading delivery...</div>;
@@ -67,6 +49,9 @@ export default function DeliveryDetailPage() {
         </div>
 
         <div className="flex items-center gap-3">
+          <Button variant="outline" className="gap-2" onClick={handlePrintPDF}>
+            <Printer className="w-4 h-4" /> Print
+          </Button>
           <Button variant="outline" className="gap-2" onClick={handleDownloadPDF}>
             <Download className="w-4 h-4" /> Download PDF
           </Button>

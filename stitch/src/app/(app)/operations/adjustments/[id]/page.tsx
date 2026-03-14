@@ -4,10 +4,9 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Trash2, CheckCircle, PackageSearch, Download } from "lucide-react";
+import { ArrowLeft, Trash2, CheckCircle, PackageSearch, Download, Printer } from "lucide-react";
 import { StatusPill } from "@/components/ui/status-pill";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import { generateAdjustmentPDF, printPDF } from "@/lib/generate-pdf";
 
 export default function AdjustmentDetailPage() {
   const router = useRouter();
@@ -29,33 +28,14 @@ export default function AdjustmentDetailPage() {
 
   const handleDownloadPDF = () => {
     if (!adj) return;
-    const doc = new jsPDF();
-    
-    doc.setFontSize(20);
-    doc.text("Inventory Adjustment", 14, 22);
-    
-    doc.setFontSize(10);
-    doc.text(`Reference: ${adj.reference}`, 14, 32);
-    doc.text(`Date: ${new Date(adj.createdAt).toLocaleDateString()}`, 14, 38);
-    doc.text(`Location: ${adj.location?.warehouse?.name} / ${adj.location?.name}`, 14, 44);
-    doc.text(`Reason: ${adj.reason || "General Adjustment"}`, 14, 50);
-    doc.text(`Status: ${adj.status.toUpperCase()}`, 14, 56);
-    
-    const tableData = adj.lines.map((l: { product?: { sku: string; name: string }; systemQuantity: number; countedQuantity: number; uom: string | null; delta: number }) => [
-      l.product?.sku || "-",
-      l.product?.name || "-",
-      `${l.systemQuantity} ${l.uom || "Units"}`,
-      `${l.countedQuantity} ${l.uom || "Units"}`,
-      `${l.delta > 0 ? "+" : ""}${l.delta} ${l.uom || "Units"}`
-    ]);
-
-    autoTable(doc, {
-      startY: 65,
-      head: [["SKU", "Product", "System Qty", "Counted Qty", "Difference"]],
-      body: tableData,
-    });
-
+    const doc = generateAdjustmentPDF(adj);
     doc.save(`${adj.reference}.pdf`);
+  };
+
+  const handlePrintPDF = () => {
+    if (!adj) return;
+    const doc = generateAdjustmentPDF(adj);
+    printPDF(doc);
   };
   
   const addLine = trpc.adjustments.addLine.useMutation({ 
@@ -110,6 +90,9 @@ export default function AdjustmentDetailPage() {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-3">
+          <Button variant="outline" className="gap-2" onClick={handlePrintPDF}>
+            <Printer className="w-4 h-4" /> Print
+          </Button>
           <Button variant="outline" className="gap-2" onClick={handleDownloadPDF}>
             <Download className="w-4 h-4" /> Download PDF
           </Button>

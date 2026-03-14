@@ -35,15 +35,15 @@ export function Sidebar() {
   }, {});
 
   return (
-    <aside className="w-56 shrink-0 bg-[#0F1117] text-gray-300 flex flex-col h-screen sticky top-0 border-r border-gray-800">
+    <aside className="w-56 shrink-0 bg-[#0F1117] dark:bg-background text-gray-300 flex flex-col h-screen sticky top-0 border-r border-gray-800 dark:border-border transition-colors">
       {/* Brand */}
-      <div className="flex items-center gap-2 px-4 py-5 border-b border-gray-800">
-        <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-          <Package className="w-4 h-4 text-white" />
+      <div className="flex items-center gap-2 px-4 py-5 border-b border-gray-800 dark:border-border">
+        <div className="w-8 h-8 rounded-lg bg-indigo-600 dark:bg-primary flex items-center justify-center transition-colors">
+          <Package className="w-4 h-4 text-white dark:text-primary-foreground" />
         </div>
         <div>
           <p className="text-white font-semibold text-sm leading-tight">CoreInventory</p>
-          <p className="text-gray-500 text-xs">
+          <p className="text-gray-500 dark:text-muted-foreground text-xs">
             {session?.user?.role === "manager" ? "Admin Panel" : "Enterprise IMS"}
           </p>
         </div>
@@ -54,16 +54,18 @@ export function Sidebar() {
         {Object.entries(grouped).map(([group, items]) => (
           <div key={group}>
             {group !== "MAIN" && (
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 py-1.5">{group}</p>
+              <p className="text-xs font-semibold text-gray-500 dark:text-muted-foreground uppercase tracking-wider px-3 py-1.5">{group}</p>
             )}
             {items.map(({ href, label, icon: Icon }) => {
               const isActive = pathname === href || pathname.startsWith(href + "/");
               return (
                 <Link key={href} href={href}
-                  className={cn("flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors",
-                    isActive ? "bg-indigo-600 text-white" : "hover:bg-gray-800 text-gray-400 hover:text-white"
+                  className={cn("flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all",
+                    isActive 
+                      ? "bg-indigo-600 dark:bg-primary text-white dark:text-primary-foreground font-medium" 
+                      : "hover:bg-gray-800 dark:hover:bg-accent text-gray-400 hover:text-white dark:hover:text-foreground"
                   )}>
-                  <Icon className="w-4 h-4 shrink-0" />
+                  <Icon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
                   {label}
                 </Link>
               );
@@ -74,17 +76,17 @@ export function Sidebar() {
 
       {/* User */}
       {session?.user && (
-        <div className="border-t border-gray-800 p-3 flex items-center gap-2">
+        <div className="border-t border-gray-800 dark:border-border p-3 flex items-center gap-2">
           <Avatar className="w-8 h-8 shrink-0">
-            <AvatarFallback className="bg-indigo-600 text-white text-xs">
+            <AvatarFallback className="bg-indigo-600 dark:bg-primary text-white dark:text-primary-foreground text-xs">
               {session.user.name?.[0]?.toUpperCase() ?? "U"}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <p className="text-white text-xs font-medium truncate">{session.user.name}</p>
-            <p className="text-gray-500 text-xs capitalize">{session.user.role}</p>
+            <p className="text-white dark:text-foreground text-xs font-medium truncate">{session.user.name}</p>
+            <p className="text-gray-500 dark:text-muted-foreground text-xs capitalize">{session.user.role}</p>
           </div>
-          <button onClick={() => signOut()} className="text-gray-500 hover:text-red-500 transition-colors" title="Logout">
+          <button onClick={() => signOut()} className="text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors" title="Logout">
             <LogOut className="w-3.5 h-3.5" />
           </button>
         </div>

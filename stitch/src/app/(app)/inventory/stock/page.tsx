@@ -2,7 +2,9 @@
 
 import { trpc } from "@/lib/trpc";
 import { StatusPill } from "@/components/ui/status-pill";
-import { BarChart2 } from "lucide-react";
+import { BarChart2, Download, Printer } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { generateStockReportPDF, printPDF } from "@/lib/generate-pdf";
 
 function stockStatus(qty: number, min?: number): "in_stock" | "low_stock" | "out_of_stock" {
   if (qty === 0) return "out_of_stock";
@@ -13,12 +15,23 @@ function stockStatus(qty: number, min?: number): "in_stock" | "low_stock" | "out
 export default function StockViewPage() {
   const { data, isLoading } = trpc.products.list.useQuery({ pageSize: 100 });
 
+  const handlePrint = () => {
+    if (!data?.items) return;
+    const doc = generateStockReportPDF(data.items);
+    printPDF(doc);
+  };
+
   return (
     <div className="space-y-5">
-      <div>
-        <p className="text-xs text-gray-500">Inventory / Stock</p>
-        <h1 className="text-2xl font-bold text-gray-900">Stock View</h1>
-        <p className="text-gray-500 text-sm">Real-time stock levels across all locations.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-xs text-gray-500">Inventory / Stock</p>
+          <h1 className="text-2xl font-bold text-gray-900">Stock View</h1>
+          <p className="text-gray-500 text-sm">Real-time stock levels across all locations.</p>
+        </div>
+        <Button variant="outline" className="gap-2" onClick={handlePrint} disabled={isLoading || !data?.items.length}>
+          <Printer className="w-4 h-4" /> Print Stock Report
+        </Button>
       </div>
 
       {isLoading ? (
