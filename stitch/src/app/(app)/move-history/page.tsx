@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import { StatusPill } from "@/components/ui/status-pill";
-import { Input } from "@/components/ui/input";
-import { History, Search } from "lucide-react";
+import { History } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const OP_ICONS: Record<string, string> = {
@@ -15,7 +13,7 @@ const OP_COLOR: Record<string, string> = {
 };
 
 export default function MoveHistoryPage() {
-  const [opType, setOpType] = useState<any>(undefined);
+  const [opType, setOpType] = useState<"receipt" | "delivery" | "transfer" | "adjustment" | undefined>(undefined);
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = trpc.ledger.list.useQuery({ operationType: opType, page, pageSize: 20 });
@@ -30,7 +28,7 @@ export default function MoveHistoryPage() {
 
       {/* Filters */}
       <div className="bg-white rounded-xl border border-gray-100 p-4 flex gap-3 flex-wrap">
-        <select value={opType ?? ""} onChange={e => setOpType(e.target.value || undefined)}
+        <select value={opType ?? ""} onChange={e => setOpType(e.target.value ? (e.target.value as typeof opType) : undefined)}
           className="h-9 border border-gray-200 rounded-lg px-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white text-gray-700">
           <option value="">All Operations</option>
           <option value="receipt">Receipts</option>

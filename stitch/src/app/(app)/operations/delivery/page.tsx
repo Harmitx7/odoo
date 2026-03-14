@@ -4,15 +4,16 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { StatusPill } from "@/components/ui/status-pill";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus, Search, Eye } from "lucide-react";
+import { Plus, Eye } from "lucide-react";
 import Link from "next/link";
 
 export default function DeliveriesPage() {
-  const [status, setStatus] = useState<any>(undefined);
+  const [status, setStatus] = useState<"draft" | "waiting" | "ready" | "done" | "canceled" | undefined>(undefined);
+  const [locationId, setLocationId] = useState<string | undefined>(undefined);
   const [page, setPage] = useState(1);
 
-  const { data, isLoading, refetch } = trpc.deliveries.list.useQuery({ status, page, pageSize: 20 });
+  const { data: locations } = trpc.warehouses.listLocations.useQuery(undefined, { staleTime: 5 * 60 * 1000 });
+  const { data, isLoading, refetch } = trpc.deliveries.list.useQuery({ status, locationId, page, pageSize: 20 });
   const updateStatus = trpc.deliveries.updateStatus.useMutation({ onSuccess: () => refetch() });
   const validate = trpc.deliveries.validate.useMutation({ onSuccess: () => refetch() });
 
@@ -29,7 +30,14 @@ export default function DeliveriesPage() {
       </div>
 
       <div className="bg-white rounded-xl border border-gray-100 p-4 flex gap-3">
-        <select value={status ?? ""} onChange={e => setStatus(e.target.value || undefined)}
+        <select value={locationId ?? ""} onChange={e => setLocationId(e.target.value || undefined)}
+          className="h-9 border border-gray-200 rounded-lg px-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white text-gray-700">
+          <option value="">All Locations</option>
+          {locations?.map(l => (
+            <option key={l.id} value={l.id}>{l.name}</option>
+          ))}
+        </select>
+        <select value={status ?? ""} onChange={e => setStatus((e.target.value as typeof status) || undefined)}
           className="h-9 border border-gray-200 rounded-lg px-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white text-gray-700">
           <option value="">All Status</option>
           {["draft","waiting","ready","done","canceled"].map(s => (
@@ -58,7 +66,7 @@ export default function DeliveriesPage() {
                 <td className="px-4 py-3 text-gray-700">{d.customerName ?? "—"}</td>
                 <td className="px-4 py-3 text-gray-500">{d.sourceLocation?.name ?? "—"}</td>
                 <td className="px-4 py-3 text-gray-500">{d.scheduledDate ? new Date(d.scheduledDate).toLocaleDateString() : "—"}</td>
-                <td className="px-4 py-3"><StatusPill status={d.status as any} /></td>
+                <td className="px-4 py-3"><StatusPill status={d.status as "draft" | "waiting" | "ready" | "done" | "canceled"} /></td>
                 <td className="px-4 py-3">
                   <div className="flex gap-2">
                     <Link href={`/operations/delivery/${d.id}`}>

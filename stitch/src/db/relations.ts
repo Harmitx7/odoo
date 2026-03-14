@@ -221,3 +221,10 @@ export const stockLedgerRelations = relations(stockLedger, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export const reorderRulesRelations = relations(reorderRules, ({ one }) => ({
+  product: one(products, {
+    fields: [reorderRules.productId],
+    references: [products.id],
+  }),
+}));

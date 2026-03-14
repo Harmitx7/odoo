@@ -72,8 +72,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         // On sign-in: embed role and warehouseIds into JWT
         token.id = user.id;
-        token.role = (user as any).role;
-        token.warehouseIds = (user as any).warehouseIds ?? [];
+        token.role = (user as { role: string }).role;
+        token.warehouseIds = (user as { warehouseIds?: string[] }).warehouseIds ?? [];
       }
       return token;
     },

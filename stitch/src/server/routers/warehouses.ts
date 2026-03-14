@@ -48,7 +48,12 @@ export const warehousesRouter = createTRPCRouter({
       address: z.string().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
-      const [wh] = await ctx.db.insert(warehouses).values(input).returning();
+      // Drizzle + Neon can occasionally choke on explicit `undefined` -> `DEFAULT` prepared params
+      const values = { ...input };
+      if (!values.address) delete values.address;
+
+      const [wh] = await ctx.db.insert(warehouses).values(values).returning();
+      
       // Auto-create default stock location
       await ctx.db.insert(locations).values({
         warehouseId: wh!.id,
@@ -66,7 +71,38 @@ export const warehousesRouter = createTRPCRouter({
       code: z.string().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
-      const [loc] = await ctx.db.insert(locations).values(input).returning();
+      const values = { ...input };
+      if (!values.code) delete values.code;
+      const [loc] = await ctx.db.insert(locations).values(values).returning();
       return loc;
     }),
+
+  /**
+   * listLocations — flat list of all locations (across all accessible warehouses).
+   * Used by dropdowns in new-receipt, new-delivery, and new-product forms.
+   */
+  listLocations: protectedProcedure.query(async ({ ctx }) => {
+    const { db, user } = ctx;
+    const whs = user!.role === "manager"
+      ? await db.query.warehouses.findMany({
+          where: (w, { eq }) => eq(w.isActive, true),
+          with: { locations: true },
+        })
+      : user!.warehouseIds.length
+        ? await db.query.warehouses.findMany({
+            where: (w, { inArray }) => inArray(w.id, user!.warehouseIds),
+            with: { locations: true },
+          })
+        : [];
+
+    // Flatten and annotate with warehouse name for readability in dropdowns
+    return whs.flatMap((wh) =>
+      wh.locations.map((loc) => ({
+        ...loc,
+        warehouseName: wh.name,
+        label: `${wh.name} / ${loc.name}`,
+      }))
+    );
+  }),
 });
+

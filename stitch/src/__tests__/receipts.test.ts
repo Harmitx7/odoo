@@ -4,6 +4,7 @@ import { receipts, receiptLines, stockPerLocation, stockLedger, products, wareho
 import { eq } from 'drizzle-orm';
 import { appRouter } from '@/server/root';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ctx = { db, session: { user: { id: "test-admin", role: "manager" } } } as any;
 const caller = appRouter.createCaller(ctx);
 
@@ -29,23 +30,21 @@ describe('Stock Transactions', () => {
   });
 
   it('validating a receipt increments stock and creates an immutable ledger entry', async () => {
-    // 1. Create a draft receipt via tRPC
-    const receiptId = await caller.receipts.wrapInTx(async (tx) => {
-      const [r] = await tx.insert(receipts).values({
-        reference: "REC-TEST-001",
-        destinationLocationId: locationId,
-        status: "draft",
-        createdById: "test-admin"
-      }).returning();
+    // 1. Create a draft receipt directly via DB
+    const [r] = await db.insert(receipts).values({
+      reference: "REC-TEST-001",
+      destinationLocationId: locationId,
+      status: "draft",
+      createdById: "test-admin"
+    }).returning();
 
-      await tx.insert(receiptLines).values({
-        receiptId: r.id,
-        productId,
-        quantity: 50,
-      });
-
-      return r.id;
+    await db.insert(receiptLines).values({
+      receiptId: r.id,
+      productId,
+      quantity: 50,
     });
+
+    const receiptId = r.id;
 
     // 2. Initial stock check
     const initialStock = await db.query.stockPerLocation.findFirst({

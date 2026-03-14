@@ -5,14 +5,16 @@ import { eq, and, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 function generateRef(): string {
-  const n = Math.floor(Math.random() * 99999).toString().padStart(5, "0");
-  return `WH/OUT/${n}`;
+  const ts = Date.now().toString(36).toUpperCase();
+  const rnd = Math.random().toString(36).slice(2, 5).toUpperCase();
+  return `WH/OUT/${ts}-${rnd}`;
 }
 
 export const deliveriesRouter = createTRPCRouter({
   list: protectedProcedure
     .input(z.object({
       status: z.enum(["draft","waiting","ready","done","canceled"]).optional(),
+      locationId: z.string().uuid().optional(),
       page: z.number().min(1).default(1),
       pageSize: z.number().min(1).max(100).default(20),
     }))
@@ -21,7 +23,12 @@ export const deliveriesRouter = createTRPCRouter({
       const offset = (page - 1) * pageSize;
 
       const rows = await ctx.db.query.deliveries.findMany({
-        where: status ? eq(deliveries.status, status) : undefined,
+        where: (d, { and: a, eq: e }) => {
+          const conds = [];
+          if (status) conds.push(e(d.status, status));
+          if (input.locationId) conds.push(e(d.sourceLocationId, input.locationId));
+          return conds.length ? a(...conds) : undefined;
+        },
         with: { lines: { with: { product: true } }, sourceLocation: { with: { warehouse: true } }, createdBy: { columns: { id: true, name: true } } },
         limit: pageSize,
         offset,
@@ -52,17 +59,45 @@ export const deliveriesRouter = createTRPCRouter({
       lines: z.array(z.object({ productId: z.string().uuid(), demandQuantity: z.number().min(1), uom: z.string().optional() })),
     }))
     .mutation(async ({ ctx, input }) => {
-      const { lines, ...rest } = input;
-      const [delivery] = await ctx.db.insert(deliveries).values({
+      const { lines, scheduledDate, ...rest } = input;
+      const values = {
         ...rest,
         reference: generateRef(),
-        status: "draft",
+        status: "draft" as const,
         createdById: ctx.user!.id,
-        scheduledDate: rest.scheduledDate ? new Date(rest.scheduledDate) : undefined,
-      }).returning();
+        scheduledDate: scheduledDate ? new Date(scheduledDate) : undefined,
+      };
+      Object.keys(values).forEach((key) => {
+        if (values[key as keyof typeof values] === undefined) delete values[key as keyof typeof values];
+      });
+
+      const [delivery] = await ctx.db.insert(deliveries).values(values).returning();
 
       if (lines.length) {
         await ctx.db.insert(deliveryLines).values(lines.map(l => ({ ...l, deliveryId: delivery!.id, doneQuantity: 0 })));
+      }
+      return delivery;
+    }),
+
+  createDraft: protectedProcedure
+    .input(z.object({
+      reference: z.string().min(1),
+      sourceLocationId: z.string().uuid(),
+      customerName: z.string().optional(),
+      notes: z.string().optional(),
+      lines: z.array(z.object({ productId: z.string().uuid(), demandQuantity: z.number().min(1), uom: z.string().optional() })).default([]),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const { lines, ...rest } = input;
+      const values = { ...rest, status: "draft" as const, createdById: ctx.user!.id };
+      Object.keys(values).forEach((key) => {
+        if (values[key as keyof typeof values] === undefined) delete values[key as keyof typeof values];
+      });
+
+      const [delivery] = await ctx.db.insert(deliveries).values(values).returning();
+
+      if (lines.length) {
+        await ctx.db.insert(deliveryLines).values(lines.map((l) => ({ ...l, deliveryId: delivery!.id, doneQuantity: 0 })));
       }
       return delivery;
     }),

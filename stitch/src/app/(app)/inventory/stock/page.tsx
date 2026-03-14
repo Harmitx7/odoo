@@ -25,7 +25,7 @@ export default function StockViewPage() {
         <div className="flex justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" /></div>
       ) : (
         <div className="space-y-3">
-          {data?.items.map(p => {
+          {data?.items.filter(p => p.stockPerLocation.length > 0).map(p => {
             const min = p.reorderRules[0]?.minQuantity;
             const max = p.reorderRules[0]?.maxQuantity;
             const totalQty = p.stockPerLocation.reduce((s, sl) => s + sl.quantityOnHand, 0);

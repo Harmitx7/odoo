@@ -5,19 +5,27 @@ import { eq, and, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 function generateRef(): string {
-  return `ADJ-${Math.floor(Math.random() * 99999).toString().padStart(5, "0")}`;
+  const ts = Date.now().toString(36).toUpperCase();
+  const rnd = Math.random().toString(36).slice(2, 5).toUpperCase();
+  return `ADJ-${ts}-${rnd}`;
 }
 
 export const adjustmentsRouter = createTRPCRouter({
   list: protectedProcedure
     .input(z.object({
       status: z.enum(["draft","waiting","ready","done","canceled"]).optional(),
+      locationId: z.string().uuid().optional(),
       page: z.number().min(1).default(1),
       pageSize: z.number().min(1).max(100).default(20),
     }))
     .query(async ({ ctx, input }) => {
       const rows = await ctx.db.query.adjustments.findMany({
-        where: input.status ? eq(adjustments.status, input.status) : undefined,
+        where: (a, { and: an, eq }) => {
+          const conds = [];
+          if (input.status) conds.push(eq(a.status, input.status));
+          if (input.locationId) conds.push(eq(a.locationId, input.locationId));
+          return conds.length ? an(...conds) : undefined;
+        },
         with: { lines: { with: { product: true } }, location: { with: { warehouse: true } } },
         limit: input.pageSize,
         offset: (input.page - 1) * input.pageSize,
@@ -31,7 +39,7 @@ export const adjustmentsRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const adj = await ctx.db.query.adjustments.findFirst({
         where: eq(adjustments.id, input.id),
-        with: { lines: { with: { product: true } }, location: true },
+        with: { lines: { with: { product: true } }, location: { with: { warehouse: true } } },
       });
       if (!adj) throw new TRPCError({ code: "NOT_FOUND" });
       return adj;
@@ -61,6 +69,14 @@ export const adjustmentsRouter = createTRPCRouter({
       const linesWithDelta = lines.map(l => ({ ...l, adjustmentId: adj!.id, delta: l.countedQuantity - l.systemQuantity }));
       if (linesWithDelta.length) await ctx.db.insert(adjustmentLines).values(linesWithDelta);
       return adj;
+    }),
+
+  updateStatus: protectedProcedure
+    .input(z.object({ id: z.string().uuid(), status: z.enum(["waiting","ready","canceled"]) }))
+    .mutation(async ({ ctx, input }) => {
+      const [a] = await ctx.db.update(adjustments).set({ status: input.status, updatedAt: new Date() }).where(eq(adjustments.id, input.id)).returning();
+      if (!a) throw new TRPCError({ code: "NOT_FOUND" });
+      return a;
     }),
 
   /**
@@ -104,5 +120,37 @@ export const adjustmentsRouter = createTRPCRouter({
       }
 
       return { success: true };
+    }),
+
+  addLine: protectedProcedure
+    .input(z.object({
+      adjustmentId: z.string().uuid(),
+      productId: z.string().uuid(),
+      systemQuantity: z.number().min(0),
+      countedQuantity: z.number().min(0),
+      uom: z.string().optional(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const { adjustmentId, productId, systemQuantity, countedQuantity, uom } = input;
+      const delta = countedQuantity - systemQuantity;
+      
+      const [line] = await ctx.db.insert(adjustmentLines).values({
+        adjustmentId,
+        productId,
+        systemQuantity,
+        countedQuantity,
+        delta,
+        uom,
+      }).returning();
+      
+      return line;
+    }),
+
+  removeLine: protectedProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      const [deleted] = await ctx.db.delete(adjustmentLines).where(eq(adjustmentLines.id, input.id)).returning();
+      if (!deleted) throw new TRPCError({ code: "NOT_FOUND" });
+      return deleted;
     }),
 });

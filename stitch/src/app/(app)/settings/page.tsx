@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { User, Shield, KeyRound, Bell } from "lucide-react";
+import { Shield, KeyRound, Bell } from "lucide-react";
 
 export default function SettingsPage() {
   const { data: session } = useSession();

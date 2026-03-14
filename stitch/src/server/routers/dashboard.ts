@@ -62,4 +62,30 @@ export const dashboardRouter = createTRPCRouter({
       },
     };
   }),
+
+  /** Get detailed alerts for low stock items */
+  alerts: protectedProcedure.query(async ({ ctx }) => {
+    const { db } = ctx;
+
+    const alerts = await db
+      .select({
+        id: products.id,
+        name: products.name,
+        sku: products.sku,
+        quantity: stockPerLocation.quantityOnHand,
+        minQty: reorderRules.minQuantity,
+        location: { name: sql<string>`"locations"."name"` }
+      })
+      .from(stockPerLocation)
+      .innerJoin(reorderRules, eq(stockPerLocation.productId, reorderRules.productId))
+      .innerJoin(products, eq(stockPerLocation.productId, products.id))
+      .innerJoin(sql`"locations"`, eq(stockPerLocation.locationId, sql`"locations"."id"`))
+      .where(and(
+        sql`${stockPerLocation.quantityOnHand} < ${reorderRules.minQuantity}`,
+        sql`${stockPerLocation.quantityOnHand} > 0`
+      ))
+      .limit(5);
+
+    return alerts;
+  }),
 });

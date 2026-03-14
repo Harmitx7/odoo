@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Package, Receipt, Truck, ArrowLeftRight,
-  BarChart2, Settings, Warehouse, ClipboardList, History,
+  BarChart2, Settings, Warehouse, ClipboardList, History, LogOut
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -84,8 +84,8 @@ export function Sidebar() {
             <p className="text-white text-xs font-medium truncate">{session.user.name}</p>
             <p className="text-gray-500 text-xs capitalize">{session.user.role}</p>
           </div>
-          <button onClick={() => signOut()} className="text-gray-500 hover:text-white transition-colors">
-            <Settings className="w-3.5 h-3.5" />
+          <button onClick={() => signOut()} className="text-gray-500 hover:text-red-500 transition-colors" title="Logout">
+            <LogOut className="w-3.5 h-3.5" />
           </button>
         </div>
       )}

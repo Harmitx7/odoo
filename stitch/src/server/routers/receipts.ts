@@ -5,8 +5,10 @@ import { eq, and, ilike, or, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 function generateRef(): string {
-  const n = Math.floor(Math.random() * 99999).toString().padStart(5, "0");
-  return `WH/IN/${n}`;
+  // Timestamp (ms) + 3-char random suffix → effectively collision-free within a warehouse
+  const ts = Date.now().toString(36).toUpperCase();
+  const rnd = Math.random().toString(36).slice(2, 5).toUpperCase();
+  return `WH/IN/${ts}-${rnd}`;
 }
 
 export const receiptsRouter = createTRPCRouter({
@@ -14,6 +16,7 @@ export const receiptsRouter = createTRPCRouter({
     .input(z.object({
       search: z.string().optional(),
       status: z.enum(["draft","waiting","ready","done","canceled"]).optional(),
+      locationId: z.string().uuid().optional(),
       dateFrom: z.string().optional(),
       dateTo: z.string().optional(),
       page: z.number().min(1).default(1),
@@ -28,6 +31,7 @@ export const receiptsRouter = createTRPCRouter({
           const conds = [];
           if (search) conds.push(or(il(r.reference, `%${search}%`), il(r.supplierName ?? "", `%${search}%`)));
           if (status) conds.push(e(r.status, status));
+          if (input.locationId) conds.push(e(r.destinationLocationId, input.locationId));
           return conds.length ? a(...conds) : undefined;
         },
         with: { lines: { with: { product: true } }, sourceLocation: { with: { warehouse: true } }, createdBy: { columns: { id: true, name: true } } },
@@ -62,15 +66,21 @@ export const receiptsRouter = createTRPCRouter({
       lines: z.array(z.object({ productId: z.string().uuid(), quantity: z.number().min(1), uom: z.string().optional() })),
     }))
     .mutation(async ({ ctx, input }) => {
-      const { lines, ...rest } = input;
-      const [receipt] = await ctx.db.insert(receipts).values({
+      const { lines, scheduledDate, deadline, ...rest } = input;
+      const values = {
         ...rest,
         reference: generateRef(),
-        status: "draft",
+        status: "draft" as const,
         createdById: ctx.user!.id,
-        scheduledDate: rest.scheduledDate ? new Date(rest.scheduledDate) : undefined,
-        deadline: rest.deadline ? new Date(rest.deadline) : undefined,
-      }).returning();
+        scheduledDate: scheduledDate ? new Date(scheduledDate) : undefined,
+        deadline: deadline ? new Date(deadline) : undefined,
+      };
+      
+      Object.keys(values).forEach((key) => {
+        if (values[key as keyof typeof values] === undefined) delete values[key as keyof typeof values];
+      });
+
+      const [receipt] = await ctx.db.insert(receipts).values(values).returning();
 
       if (lines.length) {
         await ctx.db.insert(receiptLines).values(lines.map(l => ({ ...l, receiptId: receipt!.id })));
@@ -130,5 +140,33 @@ export const receiptsRouter = createTRPCRouter({
       }
 
       return { success: true };
+    }),
+
+  /**
+   * createDraft — alias for create used by the new-receipt form.
+   * Accepts minimal fields and creates a draft receipt.
+   */
+  createDraft: protectedProcedure
+    .input(z.object({
+      reference: z.string().min(1),
+      destinationLocationId: z.string().uuid(),
+      supplierName: z.string().optional(),
+      notes: z.string().optional(),
+      lines: z.array(z.object({ productId: z.string().uuid(), quantity: z.number().min(1), uom: z.string().optional() })).default([]),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const { lines, ...rest } = input;
+      const values = { ...rest, status: "draft" as const, createdById: ctx.user!.id };
+      
+      Object.keys(values).forEach((key) => {
+        if (values[key as keyof typeof values] === undefined) delete values[key as keyof typeof values];
+      });
+
+      const [receipt] = await ctx.db.insert(receipts).values(values).returning();
+
+      if (lines.length) {
+        await ctx.db.insert(receiptLines).values(lines.map((l) => ({ ...l, receiptId: receipt!.id })));
+      }
+      return receipt;
     }),
 });

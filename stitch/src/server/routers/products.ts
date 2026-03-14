@@ -64,7 +64,7 @@ export const productsRouter = createTRPCRouter({
       const [product] = await ctx.db.insert(products).values({
         name: input.name,
         sku: input.sku,
-        categoryId: input.categoryId,
+        categoryId: input.categoryId || null,
         uom: input.uom,
       }).returning();
 
