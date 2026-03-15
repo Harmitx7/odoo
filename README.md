@@ -19,6 +19,16 @@
 
 **Full-stack warehouse operations platform — glassmorphic UI · dark/light themes · PDF receipts · real-time KPIs**
 
+<br/>
+
+<a href="https://drive.google.com/file/d/1XK9ZFRHU1LCxZbf-i4nqr_pqQ4p6Pk5R/view?usp=drivesdk" target="_blank">
+  <img src="https://img.shields.io/badge/▶_Watch_Full_Demo-Google_Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white" alt="Watch Demo on Google Drive" />
+</a>
+&nbsp;&nbsp;
+<a href="https://github.com/Harmitx7/odoo/blob/core/docs/CoreInventory.MOV" target="_blank">
+  <img src="https://img.shields.io/badge/▶_Watch_Full_Demo-GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="Watch Demo on GitHub" />
+</a>
+
 ---
 
 <table>
