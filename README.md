@@ -352,8 +352,8 @@ Plus **"Print Stock Report"** and **"View Full Ledger"** quick action buttons.
 │  │        └─────────────┴──────────────┴──────────────┘          │   │
 │  │                          │                                    │   │
 │  │              ┌───────────┴────────────┐                       │   │
-│  │              │  @trpc/react-query v11  │                      │   │
-│  │              │  Type-safe RPC client   │                      │   │
+│  │              │  @trpc/react-query v11 │                       │   │
+│  │              │  Type-safe RPC client  │                       │   │
 │  │              └───────────┬────────────┘                       │   │
 │  └──────────────────────────┼────────────────────────────────────┘   │
 │                             │  tRPC HTTP calls                       │
@@ -370,7 +370,7 @@ Plus **"Print Stock Report"** and **"View Full Ledger"** quick action buttons.
 │  │                          │                                    │   │
 │  │              ┌───────────┴────────────┐                       │   │
 │  │              │  Drizzle ORM (v0.45)   │                       │   │
-│  │              │  Type-safe SQL queries  │                      │   │
+│  │              │  Type-safe SQL queries │                       │   │
 │  │              └───────────┬────────────┘                       │   │
 │  └──────────────────────────┼────────────────────────────────────┘   │
 │                             │                                        │
