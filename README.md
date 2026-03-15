@@ -337,43 +337,43 @@ Plus **"Print Stock Report"** and **"View Full Ledger"** quick action buttons.
 > **Monolithic Full-Stack** — Single Next.js 16 deployment with embedded tRPC API layer.
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                     Next.js 16 (App Router)                         │
-│                                                                     │
-│  ┌──────────────────────────────────────────────────────────────┐   │
+┌──────────────────────────────────────────────────────────────────────┐
+│                     Next.js 16 (App Router)                          │
+│                                                                      │
+│  ┌───────────────────────────────────────────────────────────────┐   │
 │  │                    CLIENT (React 19 + RSC)                    │   │
 │  │                                                               │   │
-│  │  ┌───────────┐ ┌───────────┐ ┌────────────┐ ┌────────────┐   │   │
-│  │  │ Dashboard │ │ Inventory │ │ Operations │ │  Settings  │   │   │
-│  │  │  KPIs     │ │ Products  │ │ Receipts   │ │  Profile   │   │   │
-│  │  │  Alerts   │ │ Stock     │ │ Deliveries │ │  Warehouse │   │   │
-│  │  │  Reports  │ │ Catalog   │ │ Transfers  │ │  Auth      │   │   │
-│  │  └─────┬─────┘ └─────┬─────┘ └──────┬─────┘ └──────┬─────┘   │   │
-│  │        └─────────────┴──────────────┴──────────────┘         │   │
+│  │  ┌───────────┐ ┌───────────┐ ┌────────────┐ ┌────────────┐    │   │
+│  │  │ Dashboard │ │ Inventory │ │ Operations │ │  Settings  │    │   │
+│  │  │  KPIs     │ │ Products  │ │ Receipts   │ │  Profile   │    │   │
+│  │  │  Alerts   │ │ Stock     │ │ Deliveries │ │  Warehouse │    │   │
+│  │  │  Reports  │ │ Catalog   │ │ Transfers  │ │  Auth      │    │   │
+│  │  └─────┬─────┘ └─────┬─────┘ └──────┬─────┘ └──────┬─────┘    │   │
+│  │        └─────────────┴──────────────┴──────────────┘          │   │
 │  │                          │                                    │   │
 │  │              ┌───────────┴────────────┐                       │   │
-│  │              │  @trpc/react-query v11  │                       │   │
-│  │              │  Type-safe RPC client   │                       │   │
+│  │              │  @trpc/react-query v11  │                      │   │
+│  │              │  Type-safe RPC client   │                      │   │
 │  │              └───────────┬────────────┘                       │   │
 │  └──────────────────────────┼────────────────────────────────────┘   │
-│                             │  tRPC HTTP calls                      │
+│                             │  tRPC HTTP calls                       │
 │  ┌──────────────────────────┼────────────────────────────────────┐   │
 │  │                   SERVER (tRPC v11 Router)                    │   │
 │  │                                                               │   │
-│  │  ┌───────────┐ ┌───────────┐ ┌────────────┐ ┌────────────┐   │   │
-│  │  │ dashboard │ │ products  │ │  receipts  │ │ warehouses │   │   │
-│  │  │ .router   │ │ .router   │ │ deliveries │ │ .router    │   │   │
-│  │  │           │ │           │ │ transfers  │ │            │   │   │
-│  │  │           │ │           │ │ adjustments│ │            │   │   │
-│  │  └─────┬─────┘ └─────┬─────┘ └──────┬─────┘ └──────┬─────┘   │   │
-│  │        └─────────────┴──────────────┴──────────────┘         │   │
+│  │  ┌───────────┐ ┌───────────┐ ┌────────────┐ ┌────────────┐    │   │
+│  │  │ dashboard │ │ products  │ │  receipts  │ │ warehouses │    │   │
+│  │  │ .router   │ │ .router   │ │ deliveries │ │ .router    │    │   │
+│  │  │           │ │           │ │ transfers  │ │            │    │   │
+│  │  │           │ │           │ │ adjustments│ │            │    │   │
+│  │  └─────┬─────┘ └─────┬─────┘ └──────┬─────┘ └──────┬─────┘    │   │
+│  │        └─────────────┴──────────────┴──────────────┘          │   │
 │  │                          │                                    │   │
 │  │              ┌───────────┴────────────┐                       │   │
 │  │              │  Drizzle ORM (v0.45)   │                       │   │
-│  │              │  Type-safe SQL queries  │                       │   │
+│  │              │  Type-safe SQL queries  │                      │   │
 │  │              └───────────┬────────────┘                       │   │
 │  └──────────────────────────┼────────────────────────────────────┘   │
-│                             │                                       │
+│                             │                                        │
 │  ┌──────────────────────────┼──────────────┐  ┌──────────────────┐   │
 │  │        NextAuth v5       │              │  │   jsPDF + auto   │   │
 │  │  Session · Credentials   │              │  │   table          │   │
@@ -383,8 +383,8 @@ Plus **"Print Stock Report"** and **"View Full Ledger"** quick action buttons.
                                              │
                                              ▼
                                   ┌──────────────────┐
-                                  │  Neon PostgreSQL  │
-                                  │   (Serverless)    │
+                                  │  Neon PostgreSQL │
+                                  │   (Serverless)   │
                                   └──────────────────┘
 ```
 
