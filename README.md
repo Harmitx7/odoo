@@ -5,13 +5,13 @@
 ### _Enterprise-Grade Warehouse & Inventory Management System_
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![Express](https://img.shields.io/badge/Express-5-000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://postgresql.org/)
-[![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org/)
+[![tRPC](https://img.shields.io/badge/tRPC-11-2596BE?style=for-the-badge&logo=trpc&logoColor=white)](https://trpc.io/)
+[![PostgreSQL](https://img.shields.io/badge/Neon_Postgres-Serverless-00E599?style=for-the-badge&logo=postgresql&logoColor=white)](https://neon.tech/)
+[![Drizzle](https://img.shields.io/badge/Drizzle_ORM-0.45-C5F74F?style=for-the-badge&logo=drizzle&logoColor=black)](https://orm.drizzle.team/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
-**A full-stack, real-time warehouse operations platform built with a premium glassmorphic UI, dark/light theme switching, and professional PDF receipt generation.**
+**Full-stack warehouse operations platform — glassmorphic UI · dark/light themes · PDF receipt generation · real-time KPIs**
 
 ---
 
@@ -29,24 +29,15 @@
 
 ## 📖 Table of Contents
 
-- [✨ Features at a Glance](#-features-at-a-glance)
-- [🔑 Highlighted Features](#-highlighted-features)
-  - [🌗 Dark & Light Mode](#-dark--light-mode)
-  - [🖨️ Print Receipt & PDF Export](#️-print-receipt--pdf-export)
-  - [📊 Real-Time KPI Dashboard](#-real-time-kpi-dashboard)
-  - [📦 Stock View & Inventory Intelligence](#-stock-view--inventory-intelligence)
-  - [📜 Move History & Audit Ledger](#-move-history--audit-ledger)
-  - [📈 Analytics & Reports](#-analytics--reports)
-- [📸 Full Application Walkthrough](#-full-application-walkthrough)
-- [🏗️ Architecture](#️-architecture)
-- [📦 Warehouse Operations](#-warehouse-operations)
-- [🛠️ Tech Stack](#️-tech-stack)
-- [🚀 Getting Started](#-getting-started)
-- [📁 Project Structure](#-project-structure)
-- [🔐 API Documentation](#-api-documentation)
-- [🎨 Design Philosophy](#-design-philosophy)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
+| Section | Section |
+|---|---|
+| [✨ Features at a Glance](#-features-at-a-glance) | [📸 Application Walkthrough](#-full-application-walkthrough) |
+| [🌗 Dark & Light Mode](#-dark--light-mode) | [🏗️ Architecture](#️-architecture) |
+| [🖨️ Print Receipt & PDF Export](#️-print-receipt--pdf-export) | [🛠️ Tech Stack](#️-tech-stack) |
+| [📊 KPI Dashboard](#-real-time-kpi-dashboard) | [🚀 Getting Started](#-getting-started) |
+| [📦 Stock View](#-stock-view--inventory-intelligence) | [📁 Project Structure](#-project-structure) |
+| [📜 Move History](#-move-history--audit-ledger) | [🔐 tRPC API Procedures](#-trpc-api-procedures) |
+| [📈 Analytics & Reports](#-analytics--reports) | [📦 Warehouse Operations](#-warehouse-operations) |
 
 ---
 
@@ -63,11 +54,10 @@
 | 🏭 **Multi-Warehouse Support** | Manage multiple warehouses and storage locations with zone-level granularity |
 | 📜 **Move History Ledger** | Complete audit trail of every stock movement with timestamps and user attribution |
 | 📈 **Analytics & Reports** | Live summary of inventory movement, operational status, and recent ledger entries |
-| 🟢 **Live Backend Status** | Real-time connectivity monitoring with auto-reconnect and manual ping |
-| 🎨 **Glassmorphic Premium UI** | Modern frosted-glass design with subtle gradients, glow effects, and micro-animations |
-| 📱 **Fully Responsive** | Optimized for desktop, tablet, and mobile with adaptive navigation |
-| 🔐 **JWT Authentication** | Secure login with access/refresh token rotation and role-based access |
-| ⚙️ **Settings & Profile** | User profile management, role & access info, password reset, and notification preferences |
+| 🎨 **Glassmorphic Premium UI** | Frosted-glass design with gradients, glow effects, and micro-animations |
+| 📱 **Fully Responsive** | Desktop, tablet, and mobile with adaptive sidebar/bottom-nav |
+| 🔐 **NextAuth Authentication** | Secure login with session management and role-based access |
+| ⚙️ **Settings & Profile** | Profile management, role info, password reset, notifications |
 
 ---
 
@@ -385,39 +375,58 @@ Below is a complete visual walkthrough of every major screen in CoreInventory, f
 
 ## 🏗️ Architecture
 
+> **Monolithic Full-Stack** — Single Next.js 16 deployment with embedded tRPC API layer.
+
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│                        CLIENT (Browser)                          │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │              Next.js 16 (App Router + RSC)                 │  │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐   │  │
-│  │  │Dashboard │ │Products  │ │Operations│ │  Settings    │   │  │
-│  │  │  Page    │ │  CRUD    │ │ Workflow │ │  & Profile   │   │  │
-│  │  └────┬─────┘ └────┬─────┘ └────┬─────┘ └──────┬───────┘   │  │
-│  │       │            │            │              │           │  │
-│  │  ┌────┴────────────┴────────────┴──────────────┴────────┐  │  │
-│  │  │           React Query + Zustand State                │  │  │
-│  │  │      (Auth, Backend Status, UI, Theme)               │  │  │
-│  │  └─────────────────────┬────────────────────────────────┘  │  │
-│  └────────────────────────┼───────────────────────────────────┘  │
-└───────────────────────────┼──────────────────────────────────────┘
-                            │  REST API (Axios)
-                            ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                      SERVER (Express 5)                          │
-│  ┌─────────┐ ┌──────────┐ ┌───────────┐ ┌───────────────────┐    │
-│  │  Auth   │ │ Products │ │Operations │ │  Stock Ledger     │    │
-│  │  Module │ │  Module  │ │  Module   │ │    Module         │    │
-│  └────┬────┘ └────┬─────┘ └─────┬─────┘ └────────┬──────────┘    │
-│       └───────────┴─────────────┴────────────────┘               │
-│                           │                                      │
-│              ┌────────────┼────────────┐                         │
-│              ▼            ▼            ▼                         │
-│        ┌──────────┐ ┌──────────┐ ┌──────────┐                    │
-│        │PostgreSQL│ │  Redis   │ │  Winston │                    │
-│        │   15     │ │    7     │ │  Logger  │                    │
-│        └──────────┘ └──────────┘ └──────────┘                    │
-└──────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                     Next.js 16 (App Router)                         │
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐   │
+│  │                    CLIENT (React 19 + RSC)                    │   │
+│  │                                                               │   │
+│  │  ┌───────────┐ ┌───────────┐ ┌────────────┐ ┌────────────┐   │   │
+│  │  │ Dashboard │ │ Inventory │ │ Operations │ │  Settings  │   │   │
+│  │  │  KPIs     │ │ Products  │ │ Receipts   │ │  Profile   │   │   │
+│  │  │  Alerts   │ │ Stock     │ │ Deliveries │ │  Warehouse │   │   │
+│  │  │  Reports  │ │ Catalog   │ │ Transfers  │ │  Auth      │   │   │
+│  │  └─────┬─────┘ └─────┬─────┘ └──────┬─────┘ └──────┬─────┘   │   │
+│  │        └─────────────┴──────────────┴──────────────┘         │   │
+│  │                          │                                    │   │
+│  │              ┌───────────┴────────────┐                       │   │
+│  │              │  @trpc/react-query v11  │                       │   │
+│  │              │  Type-safe RPC client   │                       │   │
+│  │              └───────────┬────────────┘                       │   │
+│  └──────────────────────────┼────────────────────────────────────┘   │
+│                             │  tRPC HTTP calls                      │
+│  ┌──────────────────────────┼────────────────────────────────────┐   │
+│  │                   SERVER (tRPC v11 Router)                    │   │
+│  │                                                               │   │
+│  │  ┌───────────┐ ┌───────────┐ ┌────────────┐ ┌────────────┐   │   │
+│  │  │ dashboard │ │ products  │ │  receipts  │ │ warehouses │   │   │
+│  │  │ .router   │ │ .router   │ │ deliveries │ │ .router    │   │   │
+│  │  │           │ │           │ │ transfers  │ │            │   │   │
+│  │  │           │ │           │ │ adjustments│ │            │   │   │
+│  │  └─────┬─────┘ └─────┬─────┘ └──────┬─────┘ └──────┬─────┘   │   │
+│  │        └─────────────┴──────────────┴──────────────┘         │   │
+│  │                          │                                    │   │
+│  │              ┌───────────┴────────────┐                       │   │
+│  │              │  Drizzle ORM (v0.45)   │                       │   │
+│  │              │  Type-safe SQL queries  │                       │   │
+│  │              └───────────┬────────────┘                       │   │
+│  └──────────────────────────┼────────────────────────────────────┘   │
+│                             │                                       │
+│  ┌──────────────────────────┼──────────────┐  ┌──────────────────┐   │
+│  │        NextAuth v5       │              │  │   jsPDF + auto   │   │
+│  │  Session · Credentials   │              │  │   table          │   │
+│  │  Role-based access       │              │  │   PDF generation │   │
+│  └──────────────────────────┘              │  └──────────────────┘   │
+└────────────────────────────────────────────┼─────────────────────────┘
+                                             │
+                                             ▼
+                                  ┌──────────────────┐
+                                  │  Neon PostgreSQL  │
+                                  │   (Serverless)    │
+                                  └──────────────────┘
 ```
 
 ---
@@ -453,37 +462,45 @@ Each transition is **permission-gated** and updates the stock ledger atomically.
 
 ## 🛠️ Tech Stack
 
-### Frontend
-| Technology | Purpose |
-|---|---|
-| **Next.js 16** | React framework with App Router and Server Components |
-| **React 19** | UI library with latest concurrent features |
-| **Tailwind CSS 4** | Utility-first CSS with `@theme` design tokens |
-| **Zustand** | Lightweight state management (auth, UI, backend status) |
-| **React Query v5** | Server state management with caching and invalidation |
-| **Lucide React** | Beautiful, consistent icon library |
-| **next-themes** | Dark/Light mode with SSR compatibility |
-| **date-fns** | Lightweight date formatting utilities |
-| **jsPDF** | Client-side PDF generation for receipts and reports |
+### UI Layer
+| Technology | Version | Purpose |
+|---|---|---|
+| **Next.js** | 16.1 | App Router, RSC, API routes |
+| **React** | 19.2 | Concurrent rendering |
+| **Tailwind CSS** | 4 | Utility-first styling with `@theme` tokens |
+| **shadcn/ui** | 4 | Accessible component primitives |
+| **Lucide React** | 0.577 | Icon library |
+| **next-themes** | — | Dark/Light mode with SSR |
 
-### Backend
-| Technology | Purpose |
-|---|---|
-| **Express 5** | HTTP server with middleware pipeline |
-| **PostgreSQL 15** | Primary relational database |
-| **Redis 7** | Caching and session storage |
-| **Knex.js** | SQL query builder and migration runner |
-| **JWT** | Authentication with access + refresh tokens |
-| **bcrypt** | Secure password hashing |
-| **Zod** | Runtime input validation |
-| **Winston** | Structured logging |
-| **Helmet** | Security headers middleware |
+### Data Layer
+| Technology | Version | Purpose |
+|---|---|---|
+| **tRPC** | 11.12 | End-to-end type-safe API |
+| **@tanstack/react-query** | 5.90 | Server state, caching, invalidation |
+| **Drizzle ORM** | 0.45 | Type-safe SQL with schema-first design |
+| **Neon PostgreSQL** | Serverless | Serverless Postgres (branching, auto-scale) |
+| **Zod** | 4.3 | Runtime schema validation |
 
-### Infrastructure
-| Technology | Purpose |
-|---|---|
-| **Docker Compose** | Container orchestration for DB + Redis |
-| **ts-node-dev** | Hot-reload development server |
+### Auth & Security
+| Technology | Version | Purpose |
+|---|---|---|
+| **NextAuth (Auth.js)** | v5 beta | Session management, credential provider |
+| **bcryptjs** | 3.0 | Password hashing |
+| **Drizzle Adapter** | 1.11 | NextAuth ↔ Drizzle integration |
+
+### PDF & Reports
+| Technology | Version | Purpose |
+|---|---|---|
+| **jsPDF** | 4.2 | Client-side PDF generation |
+| **jspdf-autotable** | 5.0 | Auto-formatted data tables in PDFs |
+
+### Dev & Testing
+| Technology | Version | Purpose |
+|---|---|---|
+| **TypeScript** | 5.x | Static type safety |
+| **Vitest** | 4.1 | Unit testing |
+| **Testing Library** | 16.3 | Component testing |
+| **Drizzle Kit** | 0.31 | Schema migrations & studio |
 
 ---
 
@@ -492,177 +509,200 @@ Each transition is **permission-gated** and updates the stock ledger atomically.
 ### Prerequisites
 
 - **Node.js** ≥ 18.x
-- **Docker** & Docker Compose (for PostgreSQL + Redis)
-- **npm** or **pnpm**
+- **Neon PostgreSQL** account ([neon.tech](https://neon.tech)) or local Postgres
 
-### 1️⃣ Clone the Repository
-
-```bash
-git clone https://github.com/JenilRevaliya/odoo_ims.git
-cd odoo_ims
-```
-
-### 2️⃣ Start Infrastructure
+### 1️⃣ Clone & Install
 
 ```bash
-docker-compose up -d
-```
-
-This starts:
-- 🐘 **PostgreSQL** on port `15432`
-- 🔴 **Redis** on port `6379`
-
-### 3️⃣ Setup Backend
-
-```bash
-cd backend
-cp .env.example .env
-npm install
-npm run dev
-```
-
-The API server starts on **http://localhost:3001**
-
-### 4️⃣ Setup Frontend
-
-```bash
-cd frontend
+git clone https://github.com/Harmitx7/odoo.git
+cd odoo/stitch
 npm install
 ```
 
-Create `.env.local`:
+### 2️⃣ Configure Environment
+
+Create `stitch/.env.local`:
+
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:3001/v1
-NEXT_PUBLIC_USE_MOCKS=false
+DATABASE_URL="postgresql://user:pass@host/dbname?sslmode=require"
+AUTH_SECRET="your-auth-secret-here"
 ```
+
+### 3️⃣ Run Migrations & Seed
+
+```bash
+npm run db:generate    # Generate migration SQL
+npm run db:migrate     # Apply to database
+npm run db:seed        # Seed demo data
+```
+
+### 4️⃣ Start Development
 
 ```bash
 npm run dev
 ```
 
-The app opens on **http://localhost:3000** 🎉
+App opens on **http://localhost:3000** 🎉
 
-### 5️⃣ Run Database Migrations
+### Useful Scripts
 
-```bash
-cd backend
-npx knex migrate:latest
-```
+| Script | Description |
+|---|---|
+| `npm run dev` | Start dev server |
+| `npm run db:studio` | Open Drizzle Studio (DB GUI) |
+| `npm run db:seed` | Seed sample data |
+| `npm run type-check` | TypeScript validation |
+| `npm run lint` | ESLint check |
 
 ---
 
 ## 📁 Project Structure
 
 ```
-CoreInventory/
+odoo/
+├── stitch/                          # ← Full-stack Next.js monolith
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── (auth)/              # 🔐 Auth pages
+│   │   │   │   ├── login/           #    Login page
+│   │   │   │   └── reset-password/  #    Password reset
+│   │   │   ├── (app)/               # 🏠 Protected app shell
+│   │   │   │   ├── dashboard/       #    KPI dashboard
+│   │   │   │   ├── products/        #    Product catalog
+│   │   │   │   ├── inventory/       #    Stock view
+│   │   │   │   ├── operations/
+│   │   │   │   │   ├── receipts/    #    📥 Incoming goods
+│   │   │   │   │   ├── delivery/    #    📤 Outbound orders
+│   │   │   │   │   ├── transfers/   #    🔄 Internal moves
+│   │   │   │   │   └── adjustments/ #    ✏️ Stock corrections
+│   │   │   │   ├── move-history/    #    📜 Audit ledger
+│   │   │   │   ├── reports/         #    📈 Analytics
+│   │   │   │   ├── settings/        #    ⚙️ Profile & config
+│   │   │   │   └── layout.tsx       #    App shell + sidebar
+│   │   │   ├── api/
+│   │   │   │   ├── auth/            #    NextAuth route handler
+│   │   │   │   └── trpc/            #    tRPC HTTP endpoint
+│   │   │   ├── globals.css          #    Design tokens + themes
+│   │   │   └── layout.tsx           #    Root layout
+│   │   │
+│   │   ├── server/                  # 🖥️ tRPC Backend
+│   │   │   ├── trpc.ts              #    Context, middleware, auth
+│   │   │   ├── root.ts              #    Merged app router
+│   │   │   └── routers/
+│   │   │       ├── dashboard.ts     #    KPI aggregation queries
+│   │   │       ├── products.ts      #    Product CRUD
+│   │   │       ├── receipts.ts      #    Receipt operations
+│   │   │       ├── deliveries.ts    #    Delivery operations
+│   │   │       ├── transfers.ts     #    Transfer operations
+│   │   │       ├── adjustments.ts   #    Adjustment operations
+│   │   │       ├── warehouses.ts    #    Warehouse & locations
+│   │   │       ├── ledger.ts        #    Stock movement audit
+│   │   │       └── users.ts         #    User management
+│   │   │
+│   │   ├── db/                      # 🗄️ Database Layer
+│   │   │   ├── schema.ts            #    Drizzle table definitions
+│   │   │   ├── relations.ts         #    Table relationships
+│   │   │   ├── index.ts             #    DB connection (Neon)
+│   │   │   ├── seed.ts              #    Production seed data
+│   │   │   └── mock-seed.ts         #    Demo data generator
+│   │   │
+│   │   ├── components/              # 🧩 UI Components
+│   │   │   ├── layout/sidebar.tsx   #    Navigation sidebar
+│   │   │   ├── profile/             #    Edit profile modal
+│   │   │   ├── theme-provider.tsx   #    Dark/Light mode
+│   │   │   ├── theme-toggle.tsx     #    Theme switch button
+│   │   │   └── ui/                  #    shadcn/ui primitives
+│   │   │       ├── button.tsx       #      Button variants
+│   │   │       ├── card.tsx         #      Card container
+│   │   │       ├── table.tsx        #      Data tables
+│   │   │       ├── badge.tsx        #      Status badges
+│   │   │       ├── status-pill.tsx  #      Operation status
+│   │   │       ├── select.tsx       #      Dropdown select
+│   │   │       └── ...              #      + input, label, etc.
+│   │   │
+│   │   ├── lib/                     # 🔧 Utilities
+│   │   │   ├── generate-pdf.ts      #    PDF receipt generator
+│   │   │   ├── trpc.tsx             #    tRPC client provider
+│   │   │   ├── utils.ts             #    Shared utilities (cn)
+│   │   │   └── otp.ts               #    OTP helper
+│   │   │
+│   │   ├── auth.ts                  #    NextAuth config
+│   │   ├── middleware.ts            #    Route protection
+│   │   └── types/                   #    TypeScript declarations
+│   │
+│   ├── drizzle/                     # 📋 SQL Migrations
+│   ├── drizzle.config.ts            #    Migration config
+│   ├── vitest.config.ts             #    Test runner config
+│   └── package.json
 │
-├── 📂 backend/                    # Express API Server
-│   ├── 📂 src/
-│   │   ├── 📂 modules/
-│   │   │   ├── 📂 auth/          # Login, Register, Refresh, Forgot Password
-│   │   │   ├── 📂 products/      # CRUD + Stock Queries
-│   │   │   ├── 📂 operations/    # Receipts, Deliveries, Transfers, Adjustments
-│   │   │   ├── 📂 warehouses/    # Warehouse & Location Management
-│   │   │   ├── 📂 dashboard/     # KPI Aggregation Queries
-│   │   │   ├── 📂 stock-ledger/  # Audit Trail & Move History
-│   │   │   └── 📂 profile/       # User Profile Management
-│   │   ├── app.ts                # Express App Setup
-│   │   └── server.ts             # Entry Point
-│   ├── 📂 migrations/            # Knex Database Migrations
-│   └── 📂 tests/                 # Jest Test Suite
-│
-├── 📂 frontend/                   # Next.js Client Application
-│   ├── 📂 src/
-│   │   ├── 📂 app/
-│   │   │   ├── 📂 (auth)/       # Login, Signup, Forgot Password Pages
-│   │   │   ├── 📂 (dashboard)/  # Protected Dashboard Routes
-│   │   │   ├── globals.css       # Design Tokens + Theme Variables
-│   │   │   └── layout.tsx        # Root Layout with Fonts
-│   │   ├── 📂 components/
-│   │   │   ├── 📂 layout/       # Sidebar, Header, BottomNav, AuthGuard
-│   │   │   └── 📂 ui/           # KPICard, Toast, Skeleton, ThemeToggle, Receipt
-│   │   ├── 📂 hooks/            # React Query Hooks (useProducts, useOperations...)
-│   │   ├── 📂 lib/              # Axios Instance, Mock Data
-│   │   ├── 📂 providers/        # QueryClient, Theme, Auth Providers
-│   │   ├── 📂 store/            # Zustand Stores (auth, backend, ui, toast)
-│   │   └── 📂 types/            # TypeScript Interfaces
-│   └── 📂 public/               # Static Assets
-│
-├── 📂 docs/                      # Documentation & Screenshots
-│   └── 📂 screenshots/          # App Screenshots for README
-│
-├── 📂 shared/                    # Shared Constants & Types
-├── docker-compose.yml            # Infrastructure Setup
-└── README.md                     # ← You are here!
+├── docs/screenshots/                # 📸 README images
+└── README.md                        # ← You are here!
 ```
 
 ---
 
-## 🔐 API Documentation
+## 🔐 tRPC API Procedures
 
-### Authentication
+> All procedures are **end-to-end type-safe** via tRPC v11. No REST endpoints — call them directly from React components.
 
-| Method | Endpoint | Description |
+### `dashboard` Router
+| Procedure | Type | Description |
 |---|---|---|
-| `POST` | `/v1/auth/register` | Create new user account |
-| `POST` | `/v1/auth/login` | Login with email + password |
-| `POST` | `/v1/auth/refresh` | Refresh access token |
-| `POST` | `/v1/auth/forgot-password` | Request password reset |
+| `getKpis` | `query` | KPI summary (total, low stock, out of stock, pending) |
+| `getRecentOps` | `query` | Latest operations across all types |
 
-### Products
-
-| Method | Endpoint | Description |
+### `products` Router
+| Procedure | Type | Description |
 |---|---|---|
-| `GET` | `/v1/products` | List all products with stock info |
-| `GET` | `/v1/products/:id` | Get single product with location breakdown |
-| `POST` | `/v1/products` | Create new product |
-| `PATCH` | `/v1/products/:id` | Update product details |
-| `DELETE` | `/v1/products/:id` | Delete product |
+| `list` | `query` | All products with stock levels |
+| `getById` | `query` | Single product with location breakdown |
+| `create` | `mutation` | Add new product |
+| `update` | `mutation` | Edit product details |
+| `delete` | `mutation` | Remove product |
 
-### Operations
-
-| Method | Endpoint | Description |
+### `receipts` / `deliveries` / `transfers` / `adjustments` Routers
+| Procedure | Type | Description |
 |---|---|---|
-| `GET` | `/v1/operations` | List operations with filters |
-| `GET` | `/v1/operations/:id` | Get operation with product lines |
-| `POST` | `/v1/operations` | Create new operation (draft) |
-| `PATCH` | `/v1/operations/:id` | Update operation details |
-| `POST` | `/v1/operations/:id/submit` | Submit for approval |
-| `POST` | `/v1/operations/:id/ready` | Mark as ready |
-| `POST` | `/v1/operations/:id/validate` | Validate & execute (updates stock) |
-| `POST` | `/v1/operations/:id/cancel` | Cancel operation |
+| `list` | `query` | List with filters (location, status) |
+| `getById` | `query` | Detail with product lines |
+| `create` | `mutation` | Create draft operation |
+| `submit` | `mutation` | Submit for approval |
+| `setReady` | `mutation` | Mark as ready |
+| `validate` | `mutation` | Execute & update stock ledger |
+| `cancel` | `mutation` | Cancel operation |
 
-### Warehouses
-
-| Method | Endpoint | Description |
+### `warehouses` Router
+| Procedure | Type | Description |
 |---|---|---|
-| `GET` | `/v1/warehouses` | List all warehouses |
-| `POST` | `/v1/warehouses` | Create warehouse |
-| `GET` | `/v1/warehouses/:id/locations` | List locations in warehouse |
-| `POST` | `/v1/warehouses/:id/locations` | Create location |
+| `list` | `query` | All warehouses |
+| `create` | `mutation` | Add warehouse |
+| `listLocations` | `query` | Locations in a warehouse |
+| `createLocation` | `mutation` | Add storage location |
 
-### Dashboard & Ledger
-
-| Method | Endpoint | Description |
+### `ledger` Router
+| Procedure | Type | Description |
 |---|---|---|
-| `GET` | `/v1/dashboard/kpis` | Get KPI summary data |
-| `GET` | `/v1/stock-ledger` | Get stock movement history |
-| `GET` | `/v1/health` | Health check endpoint |
+| `list` | `query` | Stock movement audit trail |
+
+### `users` Router
+| Procedure | Type | Description |
+|---|---|---|
+| `getProfile` | `query` | Current user profile |
+| `updateProfile` | `mutation` | Edit profile info |
 
 ---
 
 ## 🎨 Design Philosophy
 
-CoreInventory follows a **premium, enterprise-grade design language**:
-
-- **🪟 Glassmorphism** — Frosted-glass surfaces with `backdrop-blur` and subtle borders
-- **✨ Micro-animations** — Counter animations on KPI values, shimmer effects on hover, smooth transitions
-- **🎯 Status-driven UI** — Colors react to data state (green = healthy, amber = warning, red = critical)
-- **📐 Fluid Typography** — `clamp()` based sizing that scales perfectly from mobile to 4K
-- **🖋️ Premium Typography** — DM Mono for headings, IBM Plex Sans for body, IBM Plex Mono for code
-- **🧱 Design Tokens** — All colors, spacing, and radii defined as CSS custom properties for consistency
-- **🌗 Theme System** — `next-themes` with oklch-based color palettes for perceptually uniform dark/light modes
-- **🖨️ Print-First Documents** — Dedicated CSS print styles that strip all UI chrome for clean PDF output
+| Principle | Implementation |
+|---|---|
+| 🪟 **Glassmorphism** | `backdrop-blur` surfaces with subtle borders |
+| ✨ **Micro-animations** | KPI counter animations, shimmer hovers, smooth transitions |
+| 🎯 **Status-driven UI** | Green = healthy · Amber = warning · Red = critical |
+| 📐 **Fluid Typography** | `clamp()` sizing from mobile to 4K |
+| 🧱 **Design Tokens** | oklch-based CSS custom properties |
+| 🌗 **Dual Themes** | `next-themes` with dark/light oklch palettes |
+| 🖨️ **Print-First PDFs** | CSS print styles strip UI chrome automatically |
 
 ---
 
