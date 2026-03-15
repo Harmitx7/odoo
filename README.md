@@ -166,7 +166,7 @@ The system generates **professional, print-ready receipt documents** for every w
 ### 📦 Stock View & Inventory Intelligence
 
 <div align="center">
-<img src="docs/screenshots/stock-view.jpeg" alt="Stock View" width="85%" />
+<img src="docs/screenshots/stock-inventory.png" alt="Stock View" width="85%" />
 </div>
 
 | Feature | Detail |
@@ -261,7 +261,7 @@ Plus **"Print Stock Report"** and **"View Full Ledger"** quick action buttons.
 ---
 
 ### 📈 Stock View
-<img src="docs/screenshots/stock-view.jpeg" alt="Stock View" width="85%" />
+<img src="docs/screenshots/stock-inventory.png" alt="Stock View" width="85%" />
 
 > _Min/max thresholds · color-coded progress bars · warehouse-level breakdown · Print Stock Report_
 
