@@ -1,6 +1,8 @@
 <div align="center">
 
-# ⬡ CoreInventory
+<img src="https://img.icons8.com/fluency/96/warehouse.png" width="80" alt="CoreInventory Logo" />
+
+# CoreInventory
 
 ### _Enterprise-Grade Warehouse & Inventory Management System_
 
@@ -11,17 +13,26 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
-**Full-stack warehouse operations platform — glassmorphic UI · dark/light themes · PDF receipt generation · real-time KPIs**
+[![License](https://img.shields.io/badge/License-All_Rights_Reserved-red?style=flat-square)]()
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)]()
+[![Made with Love](https://img.shields.io/badge/Made_with-❤️-ff69b4?style=flat-square)]()
+
+**Full-stack warehouse operations platform — glassmorphic UI · dark/light themes · PDF receipts · real-time KPIs**
 
 ---
 
-<img src="docs/screenshots/dashboard-dark.png" alt="CoreInventory Dashboard — Dark Mode" width="90%" />
+<table>
+<tr>
+<td align="center"><strong>🌑 Dark Mode</strong></td>
+<td align="center"><strong>☀️ Light Mode</strong></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/dashboard-dark.png" alt="Dashboard Dark" width="100%" /></td>
+<td><img src="docs/screenshots/dashboard-light.png" alt="Dashboard Light" width="100%" /></td>
+</tr>
+</table>
 
-<br/><br/>
-
-<img src="docs/screenshots/dashboard-light.png" alt="CoreInventory Dashboard — Light Mode" width="90%" />
-
-<sub>📸 Dashboard overview — switch seamlessly between Dark and Light modes</sub>
+<sub>📸 One-click theme switching — your preference is persisted across sessions</sub>
 
 </div>
 
@@ -65,33 +76,15 @@
 
 ### 🌗 Dark & Light Mode
 
-> **⭐ Highlight Feature** — A premium dual-theme system with seamless switching.
+> **⭐ Highlight Feature** — Premium dual-theme system powered by `next-themes`
 
-CoreInventory ships with a **premium dual-theme system** powered by `next-themes`. Toggle with a single click on the **☀️ / 🌙 icon** in the header — your preference is persisted across sessions.
-
-<div align="center">
-
-<table>
-<tr>
-<td align="center"><strong>🌑 Dark Mode</strong></td>
-<td align="center"><strong>☀️ Light Mode</strong></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/dashboard-dark.png" alt="Dashboard Dark Mode" width="100%" /></td>
-<td><img src="docs/screenshots/dashboard-light.png" alt="Dashboard Light Mode" width="100%" /></td>
-</tr>
-</table>
-
-<sub>↑ The same powerful dashboard rendered in both themes — notice the glassmorphic KPI cards, low-stock alerts, and live operation counters</sub>
-
-</div>
+Toggle between themes with a single click. Preference is persisted via `localStorage`.
 
 | | Dark Mode ⬡ | Light Mode ☀️ |
 |---|---|---|
 | **Background** | Deep OLED blacks (`oklch(10%)`) | Soft paper white (`oklch(98%)`) |
 | **Surfaces** | Frosted glass with subtle borders | Clean white cards with light borders |
-| **Text** | High contrast warm white | Rich dark grey for readability |
-| **Accent** | Warm amber/gold (`oklch(72% 70)`) | Same amber — consistent brand |
+| **Accent** | Warm amber/gold | Same amber — consistent brand |
 | **Persistence** | ✅ Saved to localStorage | ✅ Survives refresh & navigation |
 
 ---
@@ -148,17 +141,13 @@ The system generates **professional, print-ready receipt documents** for every w
 
 ### 📊 Real-Time KPI Dashboard
 
-The dashboard provides an **at-a-glance operational overview** with animated KPI cards and live data refresh.
-
 <div align="center">
 <img src="docs/screenshots/dashboard-dark-full.jpeg" alt="Full Dashboard View" width="85%" />
-
-> _Complete dashboard with KPI cards, low stock alerts, receipt/delivery operation counters, and live tracking status._
 </div>
 
 | Card | What It Shows | Status Indicator |
 |---|---|---|
-| **Total Products** | Sum of all products currently in catalog | 🟢 Healthy |
+| **Total Products** | All products in catalog | 🟢 Healthy |
 | **Low Stock** | Products below minimum threshold | 🟡 Warning (pulse animation) |
 | **Out of Stock** | Products with zero quantity | 🔴 Critical (urgent pulse) |
 | **Pending Receipts** | Incoming goods awaiting processing | 🟢 Normal |
@@ -176,34 +165,17 @@ The dashboard provides an **at-a-glance operational overview** with animated KPI
 
 ### 📦 Stock View & Inventory Intelligence
 
-A powerful **real-time stock visibility** page showing every product with warehouse-level breakdown.
-
 <div align="center">
-
-<table>
-<tr>
-<td align="center"><strong>📊 Stock View (Dark Mode)</strong></td>
-<td align="center"><strong>📊 Stock View (Light Mode)</strong></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/stock-inventory.png" alt="Stock Inventory Dark" width="100%" /></td>
-<td><img src="docs/screenshots/stock-view.jpeg" alt="Stock View Light" width="100%" /></td>
-</tr>
-</table>
-
-<sub>↑ Each product card shows: name, SKU, UoM, stock level, min/max thresholds, percentage bar, warehouse distribution, and export report capability</sub>
-
+<img src="docs/screenshots/stock-view.jpeg" alt="Stock View" width="85%" />
 </div>
-
-#### Key Capabilities:
 
 | Feature | Detail |
 |---|---|
-| 📊 **Stock Level Bars** | Color-coded progress bars (green, amber, red) showing min/max threshold utilization |
-| 🏭 **Warehouse Breakdown** | Per-location stock quantities (e.g., "Delhi North-Zone: 726 · Pune Hub: 46") |
-| 🏷️ **Status Badges** | In Stock / Low Stock / Out of Stock with instant visual identification |
-| 📤 **Export Report** | One-click "Print Stock Report" generates a comprehensive PDF |
-| 📈 **Percentage Indicators** | Shows exact stock % (e.g., "77% STOCK") for quick assessment |
+| 📊 **Stock Level Bars** | Color-coded progress bars (green, amber, red) with min/max thresholds |
+| 🏭 **Warehouse Breakdown** | Per-location quantities (e.g., "Delhi North-Zone: 726 · Pune Hub: 46") |
+| 🏷️ **Status Badges** | In Stock / Low Stock / Out of Stock — instant visual identification |
+| 📤 **Export Report** | One-click "Print Stock Report" generates a PDF |
+| 📈 **Percentage Indicators** | Exact stock % per product for quick assessment |
 
 ---
 
@@ -255,119 +227,106 @@ Plus **"Print Stock Report"** and **"View Full Ledger"** quick action buttons.
 
 ## 📸 Full Application Walkthrough
 
-Below is a complete visual walkthrough of every major screen in CoreInventory, following the natural user flow:
-
 <div align="center">
 
-### 1️⃣ Login & Authentication
+### 🔐 Login & Authentication
 <img src="docs/screenshots/login.jpeg" alt="Login Page" width="70%" />
 
-> _Clean login page with email/password authentication, "Remember me" option, Google & SSO sign-in buttons, and enterprise-grade 256-bit encryption notice._
+> _Email/password auth · Google & SSO sign-in · 256-bit encryption · "Remember me" option_
 
 ---
 
-### 2️⃣ Dashboard — Dark Mode
-<img src="docs/screenshots/dashboard-dark.png" alt="Dashboard Dark" width="85%" />
+### 📊 Dashboard
+<img src="docs/screenshots/dashboard-dark-full.jpeg" alt="Dashboard" width="85%" />
 
-> _Glassmorphic KPI cards with animated counters, low-stock alerts, receipt/delivery operation counters, and live warehouse tracking._
-
----
-
-### 3️⃣ Dashboard — Light Mode
-<img src="docs/screenshots/dashboard-light.png" alt="Dashboard Light" width="85%" />
-
-> _Same powerful dashboard in a clean, bright white theme — crystal clear readability._
+> _KPI cards · low-stock alerts · receipt/delivery counters · live warehouse tracking_
 
 ---
 
-### 4️⃣ Product Catalog (Inventory)
-<img src="docs/screenshots/product-catalog.png" alt="Product Catalog" width="85%" />
+### 📦 Product Catalog
 
-> _Full product catalog with SKU, name, category, UoM, total stock, status badges (In Stock / Low Stock), search, and one-click "Manifest Asset" creation._
+<table>
+<tr>
+<td align="center"><strong>🌑 Dark Mode</strong></td>
+<td align="center"><strong>☀️ Light Mode</strong></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/product-catalog.png" alt="Catalog Dark" width="100%" /></td>
+<td><img src="docs/screenshots/products-light.jpeg" alt="Catalog Light" width="100%" /></td>
+</tr>
+</table>
 
----
-
-### 5️⃣ Product Catalog (Light Mode — Full View)
-<img src="docs/screenshots/products-light.jpeg" alt="Product Catalog Light" width="85%" />
-
-> _Products page in light theme showing all 13 products with "Print Catalog" and "+ Add Product" action buttons._
-
----
-
-### 6️⃣ Stock View — Dark Mode
-<img src="docs/screenshots/stock-inventory.png" alt="Stock Inventory Dark" width="85%" />
-
-> _Grid-based stock cards with min/max thresholds, color-coded progress bars, and multi-warehouse quantity breakdown._
+> _SKU · category · UoM · stock levels · status badges · Print Catalog · Add Product_
 
 ---
 
-### 7️⃣ Stock View — Light Mode
-<img src="docs/screenshots/stock-view.jpeg" alt="Stock View Light" width="85%" />
+### 📈 Stock View
+<img src="docs/screenshots/stock-view.jpeg" alt="Stock View" width="85%" />
 
-> _Detailed stock analysis with percentage indicators and warehouse-level distribution per product._
-
----
-
-### 8️⃣ Receipts (Incoming Goods)
-<img src="docs/screenshots/receipts-list.jpeg" alt="Receipts List" width="85%" />
-
-> _Receipts list with reference links, supplier, destination, status pills (WAITING / DONE / READY), creator, and action buttons (Set Ready / Validate)._
+> _Min/max thresholds · color-coded progress bars · warehouse-level breakdown · Print Stock Report_
 
 ---
 
-### 9️⃣ Deliveries (Outbound Orders)
-<img src="docs/screenshots/deliveries-list.jpeg" alt="Deliveries List" width="85%" />
+### 📥 Receipts
+<img src="docs/screenshots/receipts-list.jpeg" alt="Receipts" width="85%" />
 
-> _Delivery orders with customer name, departure location, status tracking (DONE / DRAFT), and "Pick" action for draft deliveries._
-
----
-
-### 🔟 Internal Transfers
-<img src="docs/screenshots/transfers-list.jpeg" alt="Internal Transfers" width="85%" />
-
-> _Transfer log showing source → destination locations, date, status, and eye icon for detail view._
+> _Supplier · destination · status pills (WAITING / DONE / READY) · Set Ready / Validate actions_
 
 ---
 
-### 1️⃣1️⃣ Move History (Audit Ledger)
+### 📤 Deliveries
+<img src="docs/screenshots/deliveries-list.jpeg" alt="Deliveries" width="85%" />
+
+> _Customer · departure location · status tracking · Pick action for drafts_
+
+---
+
+### 🔄 Internal Transfers
+<img src="docs/screenshots/transfers-list.jpeg" alt="Transfers" width="85%" />
+
+> _Source → destination · date · status · detail view_
+
+---
+
+### 📜 Move History
 <img src="docs/screenshots/move-history.jpeg" alt="Move History" width="85%" />
 
-> _Immutable ledger with color-coded deltas, operation type labels, product tracking, and user attribution._
+> _Color-coded deltas · operation types · product tracking · user attribution_
 
 ---
 
-### 1️⃣2️⃣ Analytics & Reports
-<img src="docs/screenshots/reports.jpeg" alt="Analytics Reports" width="85%" />
+### 📈 Analytics & Reports
+<img src="docs/screenshots/reports.jpeg" alt="Reports" width="85%" />
 
-> _Operational reporting dashboard with KPI summary cards, recent movement summary, and export actions._
+> _KPI summary cards · recent movements · Print Stock Report · View Full Ledger_
 
 ---
 
-### 1️⃣3️⃣ Warehouse Settings
+### 🏭 Warehouse Settings
 <img src="docs/screenshots/warehouse-settings.jpeg" alt="Warehouse Settings" width="85%" />
 
-> _Multi-warehouse management with location zones: General Receiving, Bulk Storage Area, Pick Face A1, Cold Storage Room — add new locations and warehouses._
+> _Multi-warehouse zones · General Receiving · Bulk Storage · Pick Face · Cold Storage_
 
 ---
 
-### 1️⃣4️⃣ General Settings & Profile
-<img src="docs/screenshots/general-settings.jpeg" alt="General Settings" width="85%" />
+### ⚙️ General Settings
+<img src="docs/screenshots/general-settings.jpeg" alt="Settings" width="85%" />
 
-> _User profile with role & access info (Manager privileges), password management, 2FA setup, and notification preferences._
-
----
-
-### 1️⃣5️⃣ Print — Goods Receipt Note
-<img src="docs/screenshots/receipt-pdf.png" alt="Goods Receipt PDF" width="60%" />
-
-> _Professional print template showing the browser print dialog with CoreInventory branded Goods Receipt Note, product catalog table, and "Save as PDF" option._
+> _Profile · role & access · password management · notification preferences_
 
 ---
 
-### 1️⃣6️⃣ Print — Inventory Adjustment Report
-<img src="docs/screenshots/print-stock-report.jpeg" alt="Stock Report PDF" width="50%" />
+### 🖨️ Print — Goods Receipt Note
+<img src="docs/screenshots/receipt-pdf.png" alt="Receipt PDF" width="60%" />
 
-> _Inventory Adjustment document with SKU, product description, on-hand quantities, UoM, and stock level status indicators per item._
+> _Company branding · product table · routing details · signature blocks · Save as PDF_
+
+---
+
+### 🖨️ Print — Inventory Adjustment
+<img src="docs/screenshots/print-stock-report.jpeg" alt="Stock Report" width="50%" />
+
+> _SKU · product description · on-hand quantities · UoM · stock level status_
 
 </div>
 
@@ -724,12 +683,16 @@ This project is built as part of **Odoo x Indus Hackathon**. All rights reserved
 
 <div align="center">
 
+<img src="https://img.icons8.com/color/48/handshake.png" width="36" alt="team" />
+
 ### Built with ❤️ by **Jenil Soni** · **Harmit Kalal** · **Aarth Patel**
 
 _For **Odoo x Indus Hackathon**_
 
+[![GitHub](https://img.shields.io/badge/GitHub-Harmitx7/odoo-181717?style=flat-square&logo=github)](https://github.com/Harmitx7/odoo)
+
 _CoreInventory — Where precision meets elegance in warehouse management._
 
-⬡
+<img src="https://img.icons8.com/fluency/96/warehouse.png" width="40" alt="logo" />
 
 </div>
