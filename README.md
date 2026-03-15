@@ -245,16 +245,8 @@ Plus **"Print Stock Report"** and **"View Full Ledger"** quick action buttons.
 
 ### 📦 Product Catalog
 
-<table>
-<tr>
-<td align="center"><strong>🌑 Dark Mode</strong></td>
-<td align="center"><strong>☀️ Light Mode</strong></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/product-catalog.png" alt="Catalog Dark" width="100%" /></td>
-<td><img src="docs/screenshots/products-light.jpeg" alt="Catalog Light" width="100%" /></td>
-</tr>
-</table>
+<img src="docs/screenshots/product-catalog.png" alt="Catalog Dark" width="100%" />
+
 
 > _SKU · category · UoM · stock levels · status badges · Print Catalog · Add Product_
 
